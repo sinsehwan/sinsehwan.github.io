@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>알고리즘 비법서 on My website</title>
+    <link>http://localhost:1313/tags/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EB%B9%84%EB%B2%95%EC%84%9C/</link>
+    <description>Recent content in 알고리즘 비법서 on My website</description>
+    <generator>Hugo</generator>
+    <language>ko-kr</language>
+    <lastBuildDate>Fri, 25 Jul 2025 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EB%B9%84%EB%B2%95%EC%84%9C/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Algorithm - Union-Find</title>
+      <link>http://localhost:1313/posts/algorithm/union_find/</link>
+      <pubDate>Fri, 25 Jul 2025 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/algorithm/union_find/</guid>
+      <description>Union-Find (분리집합) - Java</description>
+    </item>
+  </channel>
+</rss>

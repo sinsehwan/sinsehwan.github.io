@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="ko-kr"
+  dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width">
+
+
+
+
+
+
+
+
+    
+
+
+
+
+
+
+<link rel="icon" type="image/ico" href="https://sinsehwan.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://sinsehwan.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://sinsehwan.github.io/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="https://sinsehwan.github.io/android-chrome-192x192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="https://sinsehwan.github.io/apple-touch-icon.png">
+
+<meta name="description" content="An LSM Tree overview and Java implementation."/>
+
+
+<meta name="fediverse:creator" content="@username@instance.url">
+
+
+<title>
+    
+    Algorithm - Union-Find | My website
+    
+</title>
+
+<link rel="canonical" href="https://sinsehwan.github.io/posts/algorithm/union_find/"/>
+
+<meta property="og:url" content="https://sinsehwan.github.io/posts/algorithm/union_find/">
+  <meta property="og:site_name" content="My website">
+  <meta property="og:title" content="Algorithm - Union-Find">
+  <meta property="og:description" content="An LSM Tree overview and Java implementation.">
+  <meta property="og:locale" content="ko_kr">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2025-07-25T00:00:00+00:00">
+    <meta property="article:modified_time" content="2025-07-25T00:00:00+00:00">
+    <meta property="article:tag" content="Algorithm">
+    <meta property="article:tag" content="Java">
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/assets/combined.min.fc5a44152c30c21bef13cba5205c8eddd1f54213723dfec49cb38631ef05a293.css" media="all">
+
+
+
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-xxxxxxxxx"></script>
+      <script>
+        var doNotTrack = false;
+        if ( false ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-xxxxxxxxx');
+        }
+      </script>
+
+
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+</head>
+
+
+
+
+
+
+
+<body class="dark">
+
+  <div class="content">
+    <header>
+      
+
+<div class="header">
+
+    
+
+    <h1 class="header-title">
+        <a href="https://sinsehwan.github.io/">My website</a>
+    </h1>
+
+    <div class="header-menu">
+        
+
+        
+        
+
+        <p
+            class="small ">
+            <a href="/" >
+                /home
+            </a>
+        </p>
+        
+
+        <p
+            class="small ">
+            <a href="/posts" >
+                /posts
+            </a>
+        </p>
+        
+
+        <p
+            class="small ">
+            <a href="/about" >
+                /about
+            </a>
+        </p>
+        
+        
+    </div>
+
+    
+
+</div>
+
+    </header>
+
+    <main class="main">
+      
+
+
+
+
+<div class="breadcrumbs"><a href="/">Home</a><span class="breadcrumbs-separator">/</span><a href="/posts/">Posts</a><span class="breadcrumbs-separator">/</span>
+        <a href="/posts/algorithm/union_find/">Algorithm - Union-Find</a></div>
+
+
+<div  class="autonumber" >
+  <article>
+    <header class="single-intro-container">
+        
+        <h1 class="single-title">Algorithm - Union-Find</h1>
+        <p class="single-summary">Union-Find (분리집합) - Java</p>
+        
+        <div class="single-subsummary">
+          
+          <div>
+            
+            <p class="author">Sin SeHwan </p>
+            
+            <p class="single-date">
+              <time datetime="2025-07-25T00:00:00&#43;00:00">July 25, 2025</time>
+              &nbsp; · &nbsp;5 min read
+            </p>
+          </div>
+        </div>
+        
+    </header>    
+        <div class="single-tags"><span>
+                  <a href="https://sinsehwan.github.io/tags/algorithm/">#Algorithm</a>
+                </span><span>
+                  <a href="https://sinsehwan.github.io/tags/java/">#Java</a>
+                </span>
+        </div>
+      <aside class="toc">
+        <p><strong>Table of contents</strong></p>
+        <nav id="TableOfContents">
+  <ul>
+    <li><a href="#어떤-문제를-해결할-수-있을까요">어떤 문제를 해결할 수 있을까요?</a>
+      <ul>
+        <li><a href="#무방향-그래프-예시">무방향 그래프 예시</a></li>
+      </ul>
+    </li>
+    <li><a href="#disjoint-set-서로소-집합">Disjoint Set (서로소 집합)</a>
+      <ul>
+        <li><a href="#find-연산">Find 연산</a></li>
+        <li><a href="#union-연산">Union 연산</a></li>
+      </ul>
+    </li>
+    <li><a href="#백준-1717---집합의-표현">백준 1717 - 집합의 표현</a>
+      <ul>
+        <li><a href="#findroot-parent-초기화">findRoot, parent 초기화</a></li>
+        <li><a href="#풀이">풀이</a></li>
+      </ul>
+    </li>
+    <li><a href="#요약">요약</a></li>
+  </ul>
+</nav>
+      </aside>
+    
+    <div class="single-content">
+      <h1 class="heading" id="union-find-유니온-파인드">
+  Union-Find (유니온 파인드)
+  <a class="anchor" href="#union-find-%ec%9c%a0%eb%8b%88%ec%98%a8-%ed%8c%8c%ec%9d%b8%eb%93%9c">#</a>
+</h1>
+<blockquote>
+<p>이번 시간에는 &lsquo;Union-Find&rsquo; 이라는 유형의 알고리즘을 살펴보겠습니다. 사실 단어 뜻만 봐서는 이게 뭘 표현하려고 하는 건지 잘 와닿지 않습니다. 합치고 찾는다.. 단순하게 설명하면, 두 원소가 서로 같은 집합에 속하는지 빠르게 알아내기 위해서 Find와 Union 연산을 수행해서 문제를 해결하는 방법론입니다. 개념을 훑어보고, 문제를 살펴보면서 이해해봅시다.</p></blockquote>
+<h2 class="heading" id="어떤-문제를-해결할-수-있을까요">
+  어떤 문제를 해결할 수 있을까요?
+  <a class="anchor" href="#%ec%96%b4%eb%96%a4-%eb%ac%b8%ec%a0%9c%eb%a5%bc-%ed%95%b4%ea%b2%b0%ed%95%a0-%ec%88%98-%ec%9e%88%ec%9d%84%ea%b9%8c%ec%9a%94">#</a>
+</h2>
+<p>아래는 정점과 간선을 포함한 무방향 그래프입니다.</p>
+<h3 class="heading" id="무방향-그래프-예시">
+  무방향 그래프 예시
+  <a class="anchor" href="#%eb%ac%b4%eb%b0%a9%ed%96%a5-%ea%b7%b8%eb%9e%98%ed%94%84-%ec%98%88%ec%8b%9c">#</a>
+</h3>
+<pre class="mermaid">graph LR
+    A --- B
+    B --- C
+    D --- E
+    F
+</pre>
+
+<p>예를 들어 다음과 같은 상황을 가정해 봅시다. 무방향 그래프 상에 여러 정점들이 존재하고, 해당 정점들 사이에 존재하는 간선 정보가 주어졌습니다. 어떤 정점에서 다른 정점으로 이동할 수 있는 경로가 존재하는지 어떻게 빠르게 알 수 있을까요?</p>
+<ul>
+<li>
+<p>A는 B를 통해 C와 연결돼 있으므로, (A, B, C)는 하나의 그룹(집합)입니다.</p>
+</li>
+<li>
+<p>D와 E는 서로 연결되어 있으므로, (D, E)는 또 다른 그룹입니다.</p>
+</li>
+<li>
+<p>F는 어떤 정점과도 연결되어 있지 않습니다.</p>
+</li>
+</ul>
+<p>그룹으로 분할한 후 같은 그룹에 속하면 이동 가능하다고 해석할 수 있습니다. 그러나 이 과정은 그래프가 간단할 때는 직관적으로 보이지만, 그래프 구조가 복잡해지면 Brute-Force로는 빠르게 알기 어렵습니다.</p>
+<p>필요한 집합 단위 연산을 적용할 때 단순히 DP만 적용하면 그룹이 합쳐질 때마다 그룹에 속한 모든 노드를 수정해야 합니다. 이보다는 그룹의 대표 노드를 정하고 이 대표노드, 즉 루트 노드만 수정하는 것이 이상적이겠죠. 이 방식을 Union과 Find연산을 통해 구현합니다.</p>
+<h2 class="heading" id="disjoint-set-서로소-집합">
+  Disjoint Set (서로소 집합)
+  <a class="anchor" href="#disjoint-set-%ec%84%9c%eb%a1%9c%ec%86%8c-%ec%a7%91%ed%95%a9">#</a>
+</h2>
+<ul>
+<li>
+<p>직역하면 &lsquo;서로소 집합 자료구조&rsquo;입니다. Union-Find 문제를 해결하기 위해 사용하는 자료구조 입니다.</p>
+</li>
+<li>
+<p>parent, nodeRank 배열을 일반적으로 사용해서 구현합니다. parent[i]는 원소 i의 부모 원소를 나타내고, nodeRank[i]는 원소 i가 속한 집단의 루트 노드를 기준으로 트리를 구성했을 때 해당 트리의 높이를 나타냅니다. nodeRank에 대해서는 union연산을 소개하면서 설명하겠습니다.</p>
+</li>
+</ul>
+<h3 class="heading" id="find-연산">
+  Find 연산
+  <a class="anchor" href="#find-%ec%97%b0%ec%82%b0">#</a>
+</h3>
+<ul>
+<li>특정 원소의 대표 원소(루트)를 찾기 위한 연산입니다.</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#8be9fd">int</span> <span style="color:#50fa7b">findRoot</span>(<span style="color:#8be9fd">int</span> x){
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// x가 루트일 경우, x를 반환</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">if</span>(parent<span style="color:#ff79c6">[</span>x<span style="color:#ff79c6">]</span> <span style="color:#ff79c6">==</span> x) <span style="color:#ff79c6">return</span> x;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// x가 루트가 아닐 경우, findRoot를 재귀적으로 호출</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">return</span> findRoot(parent<span style="color:#ff79c6">[</span>x<span style="color:#ff79c6">]</span>);
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>구현은 간단합니다. x가 루트면 그대로 x를, 그렇지 않다면 재귀적으로 호출해서 x가 속한 집단의 최상위 루트 노드를 탐색하는 구조입니다.</p>
+<h4 class="heading" id="경로-압축-적용">
+  경로 압축 적용
+  <a class="anchor" href="#%ea%b2%bd%eb%a1%9c-%ec%95%95%ec%b6%95-%ec%a0%81%ec%9a%a9">#</a>
+</h4>
+<p>위의 findRoot는 다음과 같은 상황에서 비효율적입니다.</p>
+<pre class="mermaid">flowchart LR
+    subgraph &#34;경로 압축 전&#34;
+        direction LR
+        A5(5) --&gt; A4(4) --&gt; A3(3)
+        A3 --&gt; A2(2) --&gt; A1((1))
+    end
+</pre>
+
+<p>만약 findRoot(5)를 수행할 경우, findRoot(5) -&gt; findRoot(4) -&gt; findRoot(3) -&gt; findRoot(2) -&gt; findRoot(1)까지 총 5번 연산을 수행하게 됩니다.</p>
+<p>findRoot(i)를 수행할 때마다 i의 depth만큼 findRoot가 호출되는 것이죠. 이를 더 효율적으로 수행할 수 있는 방법이 없을까요? 다음처럼 DP를 응용해서 parent 배열을 업데이트하면 이를 크게 개선할 수 있습니다.</p>
+<ul>
+<li>경로 압축을 적용한 findRoot</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#8be9fd">int</span> <span style="color:#50fa7b">findRoot</span>(<span style="color:#8be9fd">int</span> x){
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">if</span>(parent<span style="color:#ff79c6">[</span>x<span style="color:#ff79c6">]</span> <span style="color:#ff79c6">==</span> x) <span style="color:#ff79c6">return</span> x;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    parent<span style="color:#ff79c6">[</span>x<span style="color:#ff79c6">]</span> <span style="color:#ff79c6">=</span> findRoot(parent<span style="color:#ff79c6">[</span>x<span style="color:#ff79c6">]</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">return</span> parent<span style="color:#ff79c6">[</span>x<span style="color:#ff79c6">]</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>위 코드는 findRoot(parent[x])의 결과를 다시 parent[x]에 저장하는 방식으로 노드의 depth를 업데이트 합니다. 따라서 findRoot(5), findRoot(4), findRoot(3)을 수행한다면 트리 구조가 다음과 같이 갱신됩니다.</p>
+<pre class="mermaid">flowchart LR
+    subgraph &#34;경로 압축 후&#34;
+        direction LR
+        B5(5) --&gt; B1((1))
+        B4(4) --&gt; B1
+        B3(3) --&gt; B1
+        B2(2) --&gt; B1
+    end
+
+    classDef rootNode fill:#0077b6,stroke:#023e8a,stroke-width:2.5px,color:#fff,font-weight:bold
+    classDef pathNode fill:#e9ecef,stroke:#adb5bd,stroke-width:1.5px,color:#212529
+    classDef compressedNode fill:#90e0ef,stroke:#00b4d8,stroke-width:2px,color:#03045e,font-weight:500
+</pre>
+
+<p>경로 압축 기법을 적용하면 findRoot 연산의 시간복잡도를 거의 O(1)로 낮출 수 있습니다.</p>
+<h3 class="heading" id="union-연산">
+  Union 연산
+  <a class="anchor" href="#union-%ec%97%b0%ec%82%b0">#</a>
+</h3>
+<blockquote>
+<p>Union by Rank 최적화를 적용합니다.</p></blockquote>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#8be9fd">void</span> <span style="color:#50fa7b">unionRoot</span>(<span style="color:#8be9fd">int</span> x, <span style="color:#8be9fd">int</span> y) {
+</span></span><span style="display:flex;"><span>    x <span style="color:#ff79c6">=</span> findRoot(x);
+</span></span><span style="display:flex;"><span>    y <span style="color:#ff79c6">=</span> findRoot(y);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">if</span>(x <span style="color:#ff79c6">!=</span> y) {
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">if</span>(nodeRank<span style="color:#ff79c6">[</span>x<span style="color:#ff79c6">]</span> <span style="color:#ff79c6">&lt;</span> nodeRank<span style="color:#ff79c6">[</span>y<span style="color:#ff79c6">]</span>){
+</span></span><span style="display:flex;"><span>            parent<span style="color:#ff79c6">[</span>x<span style="color:#ff79c6">]</span> <span style="color:#ff79c6">=</span> y;
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">else</span> <span style="color:#ff79c6">if</span>(nodeRank<span style="color:#ff79c6">[</span>y<span style="color:#ff79c6">]</span> <span style="color:#ff79c6">&lt;</span> nodeRank<span style="color:#ff79c6">[</span>x<span style="color:#ff79c6">]</span>){
+</span></span><span style="display:flex;"><span>            parent<span style="color:#ff79c6">[</span>y<span style="color:#ff79c6">]</span> <span style="color:#ff79c6">=</span> x;
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">else</span>{
+</span></span><span style="display:flex;"><span>            parent<span style="color:#ff79c6">[</span>y<span style="color:#ff79c6">]</span> <span style="color:#ff79c6">=</span> x;
+</span></span><span style="display:flex;"><span>            nodeRank<span style="color:#ff79c6">[</span>x<span style="color:#ff79c6">]</span> <span style="color:#ff79c6">+=</span> 1;
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Union 연산도 의외로 코드는 간단합니다. 두 노드 x, y의 루트 노드를 탐색하고, 같은 그룹(집합)에 속하는지 비교합니다. 다른 그룹일 경우 병합을 수행하는데, 이 때 nodeRank를 비교합니다. 트리의 높이를 최대한 줄이기 위해서 nodeRank가 더 큰 그룹쪽에 병합합니다.</p>
+<p>예를 들어, 그룹 1이 2 → 1, 그룹 2가 5 → 4 → 3이라고 할 때, parent[1] = 3으로 설정해 그룹 1을 그룹 2 아래로 병합하면, 그룹 2의 nodeRank는 그대로 3으로 유지됩니다.</p>
+<p>nodeRank가 같다면 아무 쪽에 병합해도 상관없습니다. 대신, 병합 시 트리 높이가 1 증가하니 맞춰서 nodeRank도 1 증가시켜줘야 합니다.</p>
+<h2 class="heading" id="백준-1717---집합의-표현">
+  백준 1717 - 집합의 표현
+  <a class="anchor" href="#%eb%b0%b1%ec%a4%80-1717---%ec%a7%91%ed%95%a9%ec%9d%98-%ed%91%9c%ed%98%84">#</a>
+</h2>
+<ul>
+<li>Union-Find 유형의 대표문제를 풀어봅시다!</li>
+</ul>
+<p><a href="https://www.acmicpc.net/problem/1717">백준 1717 - 집합의 표현</a></p>
+<h3 class="heading" id="findroot-parent-초기화">
+  findRoot, parent 초기화
+  <a class="anchor" href="#findroot-parent-%ec%b4%88%ea%b8%b0%ed%99%94">#</a>
+</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>nodeRank <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> <span style="color:#8be9fd">int</span><span style="color:#ff79c6">[</span>n <span style="color:#ff79c6">+</span> 1<span style="color:#ff79c6">]</span>;
+</span></span><span style="display:flex;"><span>parent <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> <span style="color:#8be9fd">int</span><span style="color:#ff79c6">[</span>n <span style="color:#ff79c6">+</span> 1<span style="color:#ff79c6">]</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">for</span> (<span style="color:#8be9fd">int</span> i <span style="color:#ff79c6">=</span> 0; i <span style="color:#ff79c6">&lt;=</span> n; i<span style="color:#ff79c6">++</span>) {
+</span></span><span style="display:flex;"><span>    nodeRank<span style="color:#ff79c6">[</span>i<span style="color:#ff79c6">]</span> <span style="color:#ff79c6">=</span> 1;
+</span></span><span style="display:flex;"><span>    parent<span style="color:#ff79c6">[</span>i<span style="color:#ff79c6">]</span> <span style="color:#ff79c6">=</span> i;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>초기에는 집합의 원소가 하나이므로 nodeRank는 모두 1로 설정하고, parent값은 자기자신으로 설정합니다.</p>
+<p>이후 findRoot, unionRoot연산을 차례로 구현해서 문제 조건에 맞게 풀이합니다.</p>
+<h3 class="heading" id="풀이">
+  풀이
+  <a class="anchor" href="#%ed%92%80%ec%9d%b4">#</a>
+</h3>
+<blockquote>
+<p>전체 코드</p></blockquote>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff79c6">import</span> java.io.*;
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">import</span> java.util.StringTokenizer;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">Main</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">static</span> BufferedReader br <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> BufferedReader(<span style="color:#ff79c6">new</span> InputStreamReader(System.<span style="color:#50fa7b">in</span>));
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">static</span> BufferedWriter bw <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> BufferedWriter(<span style="color:#ff79c6">new</span> OutputStreamWriter(System.<span style="color:#50fa7b">out</span>));
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd">int</span> n, m;
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd">int</span><span style="color:#ff79c6">[]</span> nodeRank;
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd">int</span><span style="color:#ff79c6">[]</span> parent;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">static</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">main</span>(String<span style="color:#ff79c6">[]</span> args) <span style="color:#8be9fd;font-style:italic">throws</span> IOException {
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">new</span> Main().<span style="color:#50fa7b">solve</span>();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        br.<span style="color:#50fa7b">close</span>();
+</span></span><span style="display:flex;"><span>        bw.<span style="color:#50fa7b">close</span>();
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">solve</span>() <span style="color:#8be9fd;font-style:italic">throws</span> IOException {
+</span></span><span style="display:flex;"><span>        getInput();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        StringTokenizer st;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">for</span>(<span style="color:#8be9fd">int</span> i <span style="color:#ff79c6">=</span> 0; i <span style="color:#ff79c6">&lt;</span> m; i<span style="color:#ff79c6">++</span>){
+</span></span><span style="display:flex;"><span>            st <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> StringTokenizer(br.<span style="color:#50fa7b">readLine</span>());
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#8be9fd">int</span> op <span style="color:#ff79c6">=</span> Integer.<span style="color:#50fa7b">parseInt</span>(st.<span style="color:#50fa7b">nextToken</span>());
+</span></span><span style="display:flex;"><span>            <span style="color:#8be9fd">int</span> a <span style="color:#ff79c6">=</span> Integer.<span style="color:#50fa7b">parseInt</span>(st.<span style="color:#50fa7b">nextToken</span>());
+</span></span><span style="display:flex;"><span>            <span style="color:#8be9fd">int</span> b <span style="color:#ff79c6">=</span> Integer.<span style="color:#50fa7b">parseInt</span>(st.<span style="color:#50fa7b">nextToken</span>());
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#ff79c6">if</span> (op <span style="color:#ff79c6">==</span> 0) {
+</span></span><span style="display:flex;"><span>                unionRoot(a, b);
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>            <span style="color:#ff79c6">else</span> {
+</span></span><span style="display:flex;"><span>                <span style="color:#ff79c6">if</span> (findRoot(a) <span style="color:#ff79c6">==</span> findRoot(b)) {
+</span></span><span style="display:flex;"><span>                    bw.<span style="color:#50fa7b">write</span>(<span style="color:#f1fa8c">&#34;YES\n&#34;</span>);
+</span></span><span style="display:flex;"><span>                }
+</span></span><span style="display:flex;"><span>                <span style="color:#ff79c6">else</span> {
+</span></span><span style="display:flex;"><span>                    bw.<span style="color:#50fa7b">write</span>(<span style="color:#f1fa8c">&#34;NO\n&#34;</span>);
+</span></span><span style="display:flex;"><span>                }
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">getInput</span>() <span style="color:#8be9fd;font-style:italic">throws</span> IOException {
+</span></span><span style="display:flex;"><span>        StringTokenizer st <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> StringTokenizer(br.<span style="color:#50fa7b">readLine</span>());
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        n <span style="color:#ff79c6">=</span> Integer.<span style="color:#50fa7b">parseInt</span>(st.<span style="color:#50fa7b">nextToken</span>());
+</span></span><span style="display:flex;"><span>        m <span style="color:#ff79c6">=</span> Integer.<span style="color:#50fa7b">parseInt</span>(st.<span style="color:#50fa7b">nextToken</span>());
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        nodeRank <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> <span style="color:#8be9fd">int</span><span style="color:#ff79c6">[</span>n <span style="color:#ff79c6">+</span> 1<span style="color:#ff79c6">]</span>;
+</span></span><span style="display:flex;"><span>        parent <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> <span style="color:#8be9fd">int</span><span style="color:#ff79c6">[</span>n <span style="color:#ff79c6">+</span> 1<span style="color:#ff79c6">]</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">for</span> (<span style="color:#8be9fd">int</span> i <span style="color:#ff79c6">=</span> 0; i <span style="color:#ff79c6">&lt;=</span> n; i<span style="color:#ff79c6">++</span>) {
+</span></span><span style="display:flex;"><span>            nodeRank<span style="color:#ff79c6">[</span>i<span style="color:#ff79c6">]</span> <span style="color:#ff79c6">=</span> 1;
+</span></span><span style="display:flex;"><span>            parent<span style="color:#ff79c6">[</span>i<span style="color:#ff79c6">]</span> <span style="color:#ff79c6">=</span> i;
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd">int</span> <span style="color:#50fa7b">findRoot</span>(<span style="color:#8be9fd">int</span> x) {
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">if</span>(x <span style="color:#ff79c6">==</span> parent<span style="color:#ff79c6">[</span>x<span style="color:#ff79c6">]</span>) <span style="color:#ff79c6">return</span> x;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        parent<span style="color:#ff79c6">[</span>x<span style="color:#ff79c6">]</span> <span style="color:#ff79c6">=</span> findRoot(parent<span style="color:#ff79c6">[</span>x<span style="color:#ff79c6">]</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">return</span> parent<span style="color:#ff79c6">[</span>x<span style="color:#ff79c6">]</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">unionRoot</span>(<span style="color:#8be9fd">int</span> x, <span style="color:#8be9fd">int</span> y) {
+</span></span><span style="display:flex;"><span>        x <span style="color:#ff79c6">=</span> findRoot(x);
+</span></span><span style="display:flex;"><span>        y <span style="color:#ff79c6">=</span> findRoot(y);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">if</span> (x <span style="color:#ff79c6">!=</span> y) {
+</span></span><span style="display:flex;"><span>            <span style="color:#ff79c6">if</span> (nodeRank<span style="color:#ff79c6">[</span>x<span style="color:#ff79c6">]</span> <span style="color:#ff79c6">&lt;</span> nodeRank<span style="color:#ff79c6">[</span>y<span style="color:#ff79c6">]</span>) {
+</span></span><span style="display:flex;"><span>                parent<span style="color:#ff79c6">[</span>x<span style="color:#ff79c6">]</span> <span style="color:#ff79c6">=</span> y;
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>            <span style="color:#ff79c6">else</span> <span style="color:#ff79c6">if</span> (nodeRank<span style="color:#ff79c6">[</span>y<span style="color:#ff79c6">]</span> <span style="color:#ff79c6">&lt;</span> nodeRank<span style="color:#ff79c6">[</span>x<span style="color:#ff79c6">]</span>) {
+</span></span><span style="display:flex;"><span>                parent<span style="color:#ff79c6">[</span>y<span style="color:#ff79c6">]</span> <span style="color:#ff79c6">=</span> x;
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>            <span style="color:#ff79c6">else</span> {
+</span></span><span style="display:flex;"><span>                parent<span style="color:#ff79c6">[</span>y<span style="color:#ff79c6">]</span> <span style="color:#ff79c6">=</span> x;
+</span></span><span style="display:flex;"><span>                nodeRank<span style="color:#ff79c6">[</span>x<span style="color:#ff79c6">]</span> <span style="color:#ff79c6">+=</span> 1;
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 class="heading" id="요약">
+  요약
+  <a class="anchor" href="#%ec%9a%94%ec%95%bd">#</a>
+</h2>
+<blockquote>
+<p>경로 압축, Union By Rank 최적화를 적용한 Union-Find 알고리즘을 사용하면 집합을 병합하는 과정의 시간복잡도를 거의 O(1)에 가깝게 수행할 수 있습니다.</p></blockquote>
+<p>또한 조금만 응용하면 다음과 같은 상황에서도 적용해 볼 수 있는 좋은 알고리즘이기에 Union, Find 연산 코드를 템플릿화해서 사용하면 유용하게 사용 가능합니다.</p>
+<ul>
+<li>
+<p>최소 신장 트리 (MST): 크루스칼 알고리즘에서 사이클 생성 여부를 확인할 때</p>
+</li>
+<li>
+<p>네트워크 연결: 두 컴퓨터가 같은 네트워크 상에 있는지 확인할 때</p>
+</li>
+<li>
+<p>그래프의 사이클 판별</p>
+</li>
+</ul>
+
+    </div>
+  </article>
+
+  
+  
+  
+  <script defer
+    type="module"
+    id="mermaid_script"
+    data-light-theme="default"
+    data-dark-theme="dark"
+    src='/js/mermaid.js'>
+  </script>
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+  <div class="back-to-top">
+    <a href="#top">
+      back to top
+    </a>
+  </div>
+  
+
+</div>
+
+
+    </main>
+  </div>
+
+  
+  
+
+
+
+
+
+    
+
+
+
+
+  <footer>
+    
+
+    
+    
+
+
+
+
+
+    
+
+
+
+
+    
+    <p>Powered by
+        <a href="https://gohugo.io/">Hugo</a>
+        and
+        <a href="https://github.com/tomfran/typo">tomfran/typo</a>
+    </p>
+    
+    
+    
+
+
+  </footer>
+
+  
+  <link rel="stylesheet" 
+  href="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.css">
+  
+<script defer 
+  src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.js"></script>
+
+<script defer
+  src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/contrib/auto-render.min.js"
+  onload="renderMathInElement(document.body);"></script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    renderMathInElement(document.body, {
+      delimiters: [
+        { left: "$$", right: "$$", display: true },
+        { left: "$", right: "$", display: false }
+      ]
+    });
+  });
+</script>
+  
+</body>
+
+<script src="/js/theme-switch.js"></script>
+<script defer src="/js/copy-code.js"></script>
+</html>
