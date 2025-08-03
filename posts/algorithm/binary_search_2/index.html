@@ -1,8 +1,687 @@
+<!DOCTYPE html>
+<html lang="ko-kr"
+  dir="ltr">
 
-  <script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><div class="tags">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width">
+
+
+
+
+
+
+
+
     
-      <a href="/tags/algorithm">algorithm</a>
+
+
+
+
+
+
+<link rel="icon" type="image/ico" href="https://sinsehwan.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://sinsehwan.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://sinsehwan.github.io/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="https://sinsehwan.github.io/android-chrome-192x192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="https://sinsehwan.github.io/apple-touch-icon.png">
+
+<meta name="description" content="Binary Search (이진 탐색)[2] - Java"/>
+
+
+<meta name="fediverse:creator" content="@username@instance.url">
+
+
+<title>
     
-      <a href="/tags/java">java</a>
+    Algorithm - Binary Search - 2편 | Sehwan&#39;s Dev Retrospect
     
+</title>
+
+<link rel="canonical" href="https://sinsehwan.github.io/posts/algorithm/binary_search_2/"/>
+
+<meta property="og:url" content="https://sinsehwan.github.io/posts/algorithm/binary_search_2/">
+  <meta property="og:site_name" content="Sehwan&#39;s Dev Retrospect">
+  <meta property="og:title" content="Algorithm - Binary Search - 2편">
+  <meta property="og:description" content="Binary Search (이진 탐색)[2] - Java">
+  <meta property="og:locale" content="ko_kr">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2025-08-03T00:00:00+00:00">
+    <meta property="article:modified_time" content="2025-08-03T00:00:00+00:00">
+    <meta property="article:tag" content="Algorithm">
+    <meta property="article:tag" content="Java">
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/assets/combined.min.fc5a44152c30c21bef13cba5205c8eddd1f54213723dfec49cb38631ef05a293.css" media="all">
+
+
+
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-xxxxxxxxx"></script>
+      <script>
+        var doNotTrack = false;
+        if ( false ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-xxxxxxxxx');
+        }
+      </script>
+
+
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+</head>
+
+
+
+
+
+
+
+<body class="dark">
+
+  <div class="content">
+    <header>
+      
+
+<div class="header">
+
+    
+
+    <h1 class="header-title">
+        <a href="https://sinsehwan.github.io/">Sehwan&#39;s Dev Retrospect</a>
+    </h1>
+
+    <div class="header-menu">
+        
+
+        
+        
+
+        <p
+            class="small ">
+            <a href="/" >
+                /home
+            </a>
+        </p>
+        
+
+        <p
+            class="small ">
+            <a href="/posts" >
+                /posts
+            </a>
+        </p>
+        
+
+        <p
+            class="small ">
+            <a href="/tags/" >
+                /tags
+            </a>
+        </p>
+        
+
+        <p
+            class="small ">
+            <a href="/about" >
+                /about
+            </a>
+        </p>
+        
+        
+    </div>
+
+    
+
+</div>
+
+    </header>
+
+    <main class="main">
+      
+
+
+
+
+<div class="breadcrumbs"><a href="/">Home</a><span class="breadcrumbs-separator">/</span><a href="/posts/">Posts</a><span class="breadcrumbs-separator">/</span>
+        <a href="/posts/algorithm/binary_search_2/">Algorithm - Binary Search - 2편</a></div>
+
+
+<div  class="autonumber" >
+  <article>
+    <header class="single-intro-container">
+        
+        <h1 class="single-title">Algorithm - Binary Search - 2편</h1>
+        <p class="single-summary">Binary Search (이진 탐색)[2] - Java</p>
+        
+        <div class="single-subsummary">
+          
+          <div>
+            
+            <p class="author">Sin SeHwan </p>
+            
+            <p class="single-date">
+              <time datetime="2025-08-03T00:00:00&#43;00:00">August 3, 2025</time>
+              &nbsp; · &nbsp;6 min read
+            </p>
+          </div>
+        </div>
+        
+    </header>    
+        <div class="single-tags"><span>
+                  <a href="https://sinsehwan.github.io/tags/algorithm/">#Algorithm</a>
+                </span><span>
+                  <a href="https://sinsehwan.github.io/tags/java/">#Java</a>
+                </span>
+        </div>
+      <aside class="toc">
+        <p><strong>Table of contents</strong></p>
+        <nav id="TableOfContents">
+  <ul>
+    <li><a href="#백준-10816---숫자-카드-2">백준 10816 - 숫자 카드 2</a>
+      <ul>
+        <li><a href="#문제-설명">문제 설명</a></li>
+        <li><a href="#문제-풀이">문제 풀이</a></li>
+      </ul>
+    </li>
+    <li><a href="#백준-13397---구간-나누기-2">백준 13397 - 구간 나누기 2</a>
+      <ul>
+        <li><a href="#풀이-방법-도출">풀이 방법 도출</a></li>
+        <li><a href="#문제-풀이-1">문제 풀이</a></li>
+      </ul>
+    </li>
+    <li><a href="#백준-17179---케이크-자르기">백준 17179 - 케이크 자르기</a>
+      <ul>
+        <li><a href="#풀이-방법-도출-1">풀이 방법 도출</a></li>
+        <li><a href="#문제-풀이-2">문제 풀이</a></li>
+      </ul>
+    </li>
+    <li><a href="#요약">요약</a></li>
+  </ul>
+</nav>
+      </aside>
+    
+    <div class="single-content">
+      <h1 class="heading" id="binary-search-이진-탐색---2편">
+  Binary Search (이진 탐색) - 2편
+  <a class="anchor" href="#binary-search-%ec%9d%b4%ec%a7%84-%ed%83%90%ec%83%89---2%ed%8e%b8">#</a>
+</h1>
+<blockquote>
+<p>개념을 충분히 살펴보았으니, 매개 변수 탐색 유형의 문제를 풀어보면서 이해해봅시다!</p></blockquote>
+<h2 class="heading" id="백준-10816---숫자-카드-2">
+  백준 10816 - 숫자 카드 2
+  <a class="anchor" href="#%eb%b0%b1%ec%a4%80-10816---%ec%88%ab%ec%9e%90-%ec%b9%b4%eb%93%9c-2">#</a>
+</h2>
+<p>매개 변수 탐색 알고리즘을 활용해서 다음 문제를 풀어봅시다!</p>
+<p><a href="https://www.acmicpc.net/problem/10816">백준 10816 - 숫자 카드 2</a></p>
+<h3 class="heading" id="문제-설명">
+  문제 설명
+  <a class="anchor" href="#%eb%ac%b8%ec%a0%9c-%ec%84%a4%eb%aa%85">#</a>
+</h3>
+<p>이 문제는 집합과 해시를 사용해서 개수를 찾는 형식으로 풀 수도 있지만, 매개 변수 탐색 알고리즘을 이해해보기 좋은 예시 문제라서 가져왔습니다.</p>
+<p>위에서 살펴본 다음 개념을 활용해서 풀이할 수 있습니다.</p>
+<pre tabindex="0"><code>(상한 경계 다음 인덱스) - (하한 경계) == (조건을 만족하는 값의 개수)
+</code></pre><h3 class="heading" id="문제-풀이">
+  문제 풀이
+  <a class="anchor" href="#%eb%ac%b8%ec%a0%9c-%ed%92%80%ec%9d%b4">#</a>
+</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff79c6">import</span> java.io.*;
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">import</span> java.util.*;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">Main</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">static</span> BufferedReader br <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> BufferedReader(<span style="color:#ff79c6">new</span> InputStreamReader(System.<span style="color:#50fa7b">in</span>));
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">static</span> BufferedWriter bw <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> BufferedWriter(<span style="color:#ff79c6">new</span> OutputStreamWriter(System.<span style="color:#50fa7b">out</span>));
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd">int</span> n, m;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd">int</span><span style="color:#ff79c6">[]</span> card;
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd">int</span><span style="color:#ff79c6">[]</span> question;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">static</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">main</span>(String<span style="color:#ff79c6">[]</span> args) <span style="color:#8be9fd;font-style:italic">throws</span> IOException {
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">new</span> Main().<span style="color:#50fa7b">solve</span>();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        br.<span style="color:#50fa7b">close</span>();
+</span></span><span style="display:flex;"><span>        bw.<span style="color:#50fa7b">close</span>();
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">solve</span>() <span style="color:#8be9fd;font-style:italic">throws</span> IOException {
+</span></span><span style="display:flex;"><span>        getInput();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">for</span>(<span style="color:#8be9fd">int</span> q : question) {
+</span></span><span style="display:flex;"><span>            <span style="color:#8be9fd">int</span> count <span style="color:#ff79c6">=</span> getUpperBound(q) <span style="color:#ff79c6">-</span> getLowerBound(q);
+</span></span><span style="display:flex;"><span>            bw.<span style="color:#50fa7b">write</span>(count <span style="color:#ff79c6">+</span> <span style="color:#f1fa8c">&#34; &#34;</span>);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// target이 들어갈 수 있는 최소 인덱스</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// 조건을 만족하는 최소 인덱스.</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd">int</span> <span style="color:#50fa7b">getLowerBound</span>(<span style="color:#8be9fd">int</span> target) {
+</span></span><span style="display:flex;"><span>        <span style="color:#8be9fd">int</span> st <span style="color:#ff79c6">=</span> 0;
+</span></span><span style="display:flex;"><span>        <span style="color:#8be9fd">int</span> en <span style="color:#ff79c6">=</span> n;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">while</span>(st <span style="color:#ff79c6">&lt;</span> en) {
+</span></span><span style="display:flex;"><span>            <span style="color:#8be9fd">int</span> mid <span style="color:#ff79c6">=</span> st <span style="color:#ff79c6">+</span> (en <span style="color:#ff79c6">-</span> st) <span style="color:#ff79c6">/</span> 2;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#ff79c6">if</span>(card<span style="color:#ff79c6">[</span>mid<span style="color:#ff79c6">]</span> <span style="color:#ff79c6">&lt;</span> target) {
+</span></span><span style="display:flex;"><span>                st <span style="color:#ff79c6">=</span> mid <span style="color:#ff79c6">+</span> 1;
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>            <span style="color:#ff79c6">else</span> {
+</span></span><span style="display:flex;"><span>                <span style="color:#6272a4">// card[mid] &gt;= target</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#6272a4">// mid를 포함.</span>
+</span></span><span style="display:flex;"><span>                en <span style="color:#ff79c6">=</span> mid;
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">return</span> st;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// target보다 큰 최소 인덱스</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// 조건을 만족하는 최대 인덱스 다음 위치</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd">int</span> <span style="color:#50fa7b">getUpperBound</span>(<span style="color:#8be9fd">int</span> target) {
+</span></span><span style="display:flex;"><span>        <span style="color:#8be9fd">int</span> st <span style="color:#ff79c6">=</span> 0;
+</span></span><span style="display:flex;"><span>        <span style="color:#8be9fd">int</span> en <span style="color:#ff79c6">=</span> n;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">while</span>(st <span style="color:#ff79c6">&lt;</span> en) {
+</span></span><span style="display:flex;"><span>            <span style="color:#8be9fd">int</span> mid <span style="color:#ff79c6">=</span> st <span style="color:#ff79c6">+</span> (en <span style="color:#ff79c6">-</span> st) <span style="color:#ff79c6">/</span> 2;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#ff79c6">if</span>(card<span style="color:#ff79c6">[</span>mid<span style="color:#ff79c6">]</span> <span style="color:#ff79c6">&lt;=</span> target) {
+</span></span><span style="display:flex;"><span>                st <span style="color:#ff79c6">=</span> mid <span style="color:#ff79c6">+</span> 1;
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>            <span style="color:#ff79c6">else</span> {
+</span></span><span style="display:flex;"><span>                en <span style="color:#ff79c6">=</span> mid;
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">return</span> st;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">getInput</span>() <span style="color:#8be9fd;font-style:italic">throws</span> IOException {
+</span></span><span style="display:flex;"><span>        n <span style="color:#ff79c6">=</span> Integer.<span style="color:#50fa7b">parseInt</span>(br.<span style="color:#50fa7b">readLine</span>());
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        card <span style="color:#ff79c6">=</span> Arrays.<span style="color:#50fa7b">stream</span>(br.<span style="color:#50fa7b">readLine</span>().<span style="color:#50fa7b">split</span>(<span style="color:#f1fa8c">&#34; &#34;</span>))
+</span></span><span style="display:flex;"><span>                .<span style="color:#50fa7b">mapToInt</span>(Integer::parseInt)
+</span></span><span style="display:flex;"><span>                .<span style="color:#50fa7b">toArray</span>();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        Arrays.<span style="color:#50fa7b">sort</span>(card);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        m <span style="color:#ff79c6">=</span> Integer.<span style="color:#50fa7b">parseInt</span>(br.<span style="color:#50fa7b">readLine</span>());
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        question <span style="color:#ff79c6">=</span> Arrays.<span style="color:#50fa7b">stream</span>(br.<span style="color:#50fa7b">readLine</span>().<span style="color:#50fa7b">split</span>(<span style="color:#f1fa8c">&#34; &#34;</span>))
+</span></span><span style="display:flex;"><span>                .<span style="color:#50fa7b">mapToInt</span>(Integer::parseInt)
+</span></span><span style="display:flex;"><span>                .<span style="color:#50fa7b">toArray</span>();
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 class="heading" id="백준-13397---구간-나누기-2">
+  백준 13397 - 구간 나누기 2
+  <a class="anchor" href="#%eb%b0%b1%ec%a4%80-13397---%ea%b5%ac%ea%b0%84-%eb%82%98%eb%88%84%ea%b8%b0-2">#</a>
+</h2>
+<p>이번에는 조금 더 어려운 응용 문제를 살펴보겠습니다.</p>
+<p><a href="https://www.acmicpc.net/problem/13397">백준 13397 - 구간 나누기 2</a></p>
+<h3 class="heading" id="풀이-방법-도출">
+  풀이 방법 도출
+  <a class="anchor" href="#%ed%92%80%ec%9d%b4-%eb%b0%a9%eb%b2%95-%eb%8f%84%ec%b6%9c">#</a>
+</h3>
+<p>문제 설명을 읽어보면 상당히 난해합니다. 문제를 다시 해석해보면,</p>
+<ul>
+<li>N개의 수들을 M개 이하의 구간으로 나눈다.</li>
+<li>이 때 각 구간의 최댓값은 구간에 속한 수의 최댓값과 최솟값의 차이이다.</li>
+<li>구간의 점수는 각 구간의 최댓값이다.</li>
+<li>구간의 점수의 최댓값의 최솟값을 구한다.</li>
+</ul>
+<blockquote>
+<p>그러니까, 구간을 나눌 것이고 나눈 구간에는 최댓값이 존재합니다. 그게 구간의 점수가 됩니다. 구간이 여러 개이니 구간 점수도 구간 개수만큼 나오겠죠. 이 구간 점수들의 최댓값이 기준이 되는 값입니다. 이 값이 최소가 되도록 구간을 나누는 문제입니다.</p></blockquote>
+<p>문제 설명을 읽어봤을 때 마땅한 풀이법이 쉽게 떠오르지 않습니다. 또한 Brute-Force로 풀이할 경우 시간복잡도가 O(NM)이 돼서 시간초과가 날 것을 예상할 수 있습니다. 시간복잡도를 조금만 개선하면 될 것 같은데, 마땅한 풀이법이 쉽게 떠오르지 않습니다. 어떻게 풀이해야 할까요?</p>
+<p>이 문제는 결국 조건을 만족하는 최솟값을 구하는 문제입니다. 이 때문에 매개 변수 탐색 알고리즘을 적용해 볼 수 있습니다.</p>
+<ol>
+<li>특정 조건을 만족하는 최솟값을 구하는 문제이므로 매개 변수 탐색을 적용해본다.</li>
+<li>구간의 점수의 최댓값의 최솟값을 x라고 할 때 이 x를 이진 탐색 형식으로 구한다.</li>
+<li>x를 넘어설 경우 집합을 분할하고 count값을 증가시키는 형태로 x가 정해졌을 때 구간이 총 m개가 도출되는지, 또한 그 m개가 도출되게 하는 x값 중 최소를 탐색하도록 getLowerBound함수를 사용한다.</li>
+</ol>
+<h3 class="heading" id="문제-풀이-1">
+  문제 풀이
+  <a class="anchor" href="#%eb%ac%b8%ec%a0%9c-%ed%92%80%ec%9d%b4-1">#</a>
+</h3>
+<p>찾아야 하는 최솟값을 이진 탐색 대상으로 두고, 조건에 맞는 최솟값을 구하기 위해 getLowerBound를 사용하는 형식입니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff79c6">import</span> java.io.*;
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">import</span> java.util.*;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">Main</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">static</span> BufferedReader br <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> BufferedReader(<span style="color:#ff79c6">new</span> InputStreamReader(System.<span style="color:#50fa7b">in</span>));
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">static</span> BufferedWriter bw <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> BufferedWriter(<span style="color:#ff79c6">new</span> OutputStreamWriter(System.<span style="color:#50fa7b">out</span>));
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd">int</span> n, m;
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd">int</span><span style="color:#ff79c6">[]</span> arr;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">static</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">main</span>(String<span style="color:#ff79c6">[]</span> args) <span style="color:#8be9fd;font-style:italic">throws</span> IOException {
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">new</span> Main().<span style="color:#50fa7b">solve</span>();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        br.<span style="color:#50fa7b">close</span>();
+</span></span><span style="display:flex;"><span>        bw.<span style="color:#50fa7b">close</span>();
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">solve</span>() <span style="color:#8be9fd;font-style:italic">throws</span> IOException {
+</span></span><span style="display:flex;"><span>        getInput();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        bw.<span style="color:#50fa7b">write</span>(getLowerBound() <span style="color:#ff79c6">+</span> <span style="color:#f1fa8c">&#34;&#34;</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd">int</span> <span style="color:#50fa7b">getLowerBound</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#8be9fd">int</span> st <span style="color:#ff79c6">=</span> 0;
+</span></span><span style="display:flex;"><span>        <span style="color:#8be9fd">int</span> en <span style="color:#ff79c6">=</span> 10000;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">while</span>(st <span style="color:#ff79c6">&lt;</span> en) {
+</span></span><span style="display:flex;"><span>            <span style="color:#8be9fd">int</span> mid <span style="color:#ff79c6">=</span> st <span style="color:#ff79c6">+</span> (en <span style="color:#ff79c6">-</span> st) <span style="color:#ff79c6">/</span> 2;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#ff79c6">if</span>(m <span style="color:#ff79c6">&lt;</span> getSectionCount(mid)) {
+</span></span><span style="display:flex;"><span>                st <span style="color:#ff79c6">=</span> mid <span style="color:#ff79c6">+</span> 1;
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>            <span style="color:#ff79c6">else</span>{
+</span></span><span style="display:flex;"><span>                en <span style="color:#ff79c6">=</span> mid;
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">return</span> st;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd">int</span> <span style="color:#50fa7b">getSectionCount</span>(<span style="color:#8be9fd">int</span> sectionMaxScore) {
+</span></span><span style="display:flex;"><span>        <span style="color:#8be9fd">int</span> count <span style="color:#ff79c6">=</span> 1;
+</span></span><span style="display:flex;"><span>        <span style="color:#8be9fd">int</span> sectionMax <span style="color:#ff79c6">=</span> 0;
+</span></span><span style="display:flex;"><span>        <span style="color:#8be9fd">int</span> sectionMin <span style="color:#ff79c6">=</span> Integer.<span style="color:#50fa7b">MAX_VALUE</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">for</span>(<span style="color:#8be9fd">int</span> num : arr) {
+</span></span><span style="display:flex;"><span>            <span style="color:#ff79c6">if</span> (num <span style="color:#ff79c6">&gt;</span> sectionMax) {
+</span></span><span style="display:flex;"><span>                sectionMax <span style="color:#ff79c6">=</span> num;
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>            <span style="color:#ff79c6">if</span> (num <span style="color:#ff79c6">&lt;</span> sectionMin) {
+</span></span><span style="display:flex;"><span>                sectionMin <span style="color:#ff79c6">=</span> num;
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#ff79c6">if</span> (sectionMax <span style="color:#ff79c6">-</span> sectionMin <span style="color:#ff79c6">&gt;</span> sectionMaxScore) {
+</span></span><span style="display:flex;"><span>                count <span style="color:#ff79c6">+=</span> 1;
+</span></span><span style="display:flex;"><span>                sectionMin <span style="color:#ff79c6">=</span> num;
+</span></span><span style="display:flex;"><span>                sectionMax <span style="color:#ff79c6">=</span> num;
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">return</span> count;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">getInput</span>() <span style="color:#8be9fd;font-style:italic">throws</span> IOException {
+</span></span><span style="display:flex;"><span>        StringTokenizer st <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> StringTokenizer(br.<span style="color:#50fa7b">readLine</span>());
+</span></span><span style="display:flex;"><span>        n <span style="color:#ff79c6">=</span> Integer.<span style="color:#50fa7b">parseInt</span>(st.<span style="color:#50fa7b">nextToken</span>());
+</span></span><span style="display:flex;"><span>        m <span style="color:#ff79c6">=</span> Integer.<span style="color:#50fa7b">parseInt</span>(st.<span style="color:#50fa7b">nextToken</span>());
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        arr <span style="color:#ff79c6">=</span> Arrays.<span style="color:#50fa7b">stream</span>(br.<span style="color:#50fa7b">readLine</span>().<span style="color:#50fa7b">split</span>(<span style="color:#f1fa8c">&#34; &#34;</span>))
+</span></span><span style="display:flex;"><span>                .<span style="color:#50fa7b">mapToInt</span>(Integer::parseInt)
+</span></span><span style="display:flex;"><span>                .<span style="color:#50fa7b">toArray</span>();
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 class="heading" id="백준-17179---케이크-자르기">
+  백준 17179 - 케이크 자르기
+  <a class="anchor" href="#%eb%b0%b1%ec%a4%80-17179---%ec%bc%80%ec%9d%b4%ed%81%ac-%ec%9e%90%eb%a5%b4%ea%b8%b0">#</a>
+</h2>
+<p>이번에는 getUpperBound를 사용해서 해결할 수 있는 문제입니다. 앞의 문제와 접근 방식은 비슷합니다.</p>
+<p><a href="https://www.acmicpc.net/problem/17179">백준 17179 - 케이크 자르기</a></p>
+<h3 class="heading" id="풀이-방법-도출-1">
+  풀이 방법 도출
+  <a class="anchor" href="#%ed%92%80%ec%9d%b4-%eb%b0%a9%eb%b2%95-%eb%8f%84%ec%b6%9c-1">#</a>
+</h3>
+<p>케잌을 최대한 균등하게 잘라서, 가장 작은 조각의 길이가 가능한 한 최대가 되도록 해 보자! 정도로 이해할 수 있습니다.</p>
+<ol>
+<li>Brute-Force로 접근할 경우 시간복잡도가 O(NML)이 되는데, 입력 값의 범위를 살펴봤을 때 O(NML)으로는 1초 내에 문제를 풀 수 없다.</li>
+<li>특정 조건 하에서 최댓값을 구하는 형식의 문제이므로 BinarySearch를 응용해서 매개 변수 탐색으로 접근해본다.</li>
+<li>역으로 가장 작은 조각의 길이를 이진 탐색 대상으로 생각한다.</li>
+<li>x가 가장 작은 조각의 길이일 때, 이 때의 케이크를 잘라야 하는 횟수를 구하고, 이 횟수가 문제에서 주어진 값과 동일하면서 x가 최대가 되는 값을 찾아나간다.</li>
+</ol>
+<h3 class="heading" id="문제-풀이-2">
+  문제 풀이
+  <a class="anchor" href="#%eb%ac%b8%ec%a0%9c-%ed%92%80%ec%9d%b4-2">#</a>
+</h3>
+<ul>
+<li>
+<p>먼저, 유의해야 하는 사항은 getUpperBound는 조건을 만족하지 못 하게 되는 상한을 넘어서는 최초 값입니다. 그래서 항상 getUpperBound를 사용할 때는 반환값에 -1을 해야 최댓값을 구할 수 있습니다.</p>
+</li>
+<li>
+<p>또한 getCutCount 함수에서 positions[i] - present &gt;= unit &amp;&amp; l - positions[i] &gt;= unit 이 부분이 중요합니다.</p>
+<ul>
+<li>이전에 자른 위치와 현재 자를 수 있는 위치 사이의 거리가 x값 이상이라고 무조건 자르면 틀립니다.</li>
+<li>잘랐을 때 남은 길이(l - positions[i])도 x보다 커야 자를 수 있습니다.</li>
+</ul>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#ff79c6">import</span> java.io.*;
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">import</span> java.util.*;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">Main</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">static</span> BufferedReader br <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> BufferedReader(<span style="color:#ff79c6">new</span> InputStreamReader(System.<span style="color:#50fa7b">in</span>));
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">static</span> BufferedWriter bw <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> BufferedWriter(<span style="color:#ff79c6">new</span> OutputStreamWriter(System.<span style="color:#50fa7b">out</span>));
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd">int</span> n, m, l;
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd">int</span><span style="color:#ff79c6">[]</span> positions;
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd">int</span><span style="color:#ff79c6">[]</span> order;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">static</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">main</span>(String<span style="color:#ff79c6">[]</span> args) <span style="color:#8be9fd;font-style:italic">throws</span> IOException {
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">new</span> Main().<span style="color:#50fa7b">solve</span>();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        br.<span style="color:#50fa7b">close</span>();
+</span></span><span style="display:flex;"><span>        bw.<span style="color:#50fa7b">close</span>();
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">solve</span>() <span style="color:#8be9fd;font-style:italic">throws</span> IOException {
+</span></span><span style="display:flex;"><span>        getInput();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">for</span>(<span style="color:#8be9fd">int</span> o : order) {
+</span></span><span style="display:flex;"><span>            bw.<span style="color:#50fa7b">write</span>(getUpperBound(o) <span style="color:#ff79c6">-</span> 1 <span style="color:#ff79c6">+</span> <span style="color:#f1fa8c">&#34;\n&#34;</span>);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd">int</span> <span style="color:#50fa7b">getUpperBound</span>(<span style="color:#8be9fd">int</span> target) {
+</span></span><span style="display:flex;"><span>        <span style="color:#8be9fd">int</span> st <span style="color:#ff79c6">=</span> 1;
+</span></span><span style="display:flex;"><span>        <span style="color:#8be9fd">int</span> en <span style="color:#ff79c6">=</span> Integer.<span style="color:#50fa7b">MAX_VALUE</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">while</span>(st <span style="color:#ff79c6">&lt;</span> en) {
+</span></span><span style="display:flex;"><span>            <span style="color:#8be9fd">int</span> mid <span style="color:#ff79c6">=</span> st <span style="color:#ff79c6">+</span> (en <span style="color:#ff79c6">-</span> st) <span style="color:#ff79c6">/</span> 2;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#ff79c6">if</span> (target <span style="color:#ff79c6">&lt;=</span> getCutCount(mid)) {
+</span></span><span style="display:flex;"><span>                st <span style="color:#ff79c6">=</span> mid <span style="color:#ff79c6">+</span> 1;
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>            <span style="color:#ff79c6">else</span> {
+</span></span><span style="display:flex;"><span>                en <span style="color:#ff79c6">=</span> mid;
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">return</span> st;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd">int</span> <span style="color:#50fa7b">getCutCount</span>(<span style="color:#8be9fd">int</span> unit) {
+</span></span><span style="display:flex;"><span>        <span style="color:#8be9fd">int</span> present <span style="color:#ff79c6">=</span> 0;
+</span></span><span style="display:flex;"><span>        <span style="color:#8be9fd">int</span> count <span style="color:#ff79c6">=</span> 0;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">for</span>(<span style="color:#8be9fd">int</span> i <span style="color:#ff79c6">=</span> 0; i <span style="color:#ff79c6">&lt;</span> m; i<span style="color:#ff79c6">++</span>) {
+</span></span><span style="display:flex;"><span>            <span style="color:#ff79c6">if</span>(positions<span style="color:#ff79c6">[</span>i<span style="color:#ff79c6">]</span> <span style="color:#ff79c6">-</span> present <span style="color:#ff79c6">&gt;=</span> unit <span style="color:#ff79c6">&amp;&amp;</span> l <span style="color:#ff79c6">-</span> positions<span style="color:#ff79c6">[</span>i<span style="color:#ff79c6">]</span> <span style="color:#ff79c6">&gt;=</span> unit) {
+</span></span><span style="display:flex;"><span>                present <span style="color:#ff79c6">=</span> positions<span style="color:#ff79c6">[</span>i<span style="color:#ff79c6">]</span>;
+</span></span><span style="display:flex;"><span>                count <span style="color:#ff79c6">+=</span> 1;
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">return</span> count;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">getInput</span>() <span style="color:#8be9fd;font-style:italic">throws</span> IOException {
+</span></span><span style="display:flex;"><span>        StringTokenizer st <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> StringTokenizer(br.<span style="color:#50fa7b">readLine</span>());
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        n <span style="color:#ff79c6">=</span> Integer.<span style="color:#50fa7b">parseInt</span>(st.<span style="color:#50fa7b">nextToken</span>());
+</span></span><span style="display:flex;"><span>        m <span style="color:#ff79c6">=</span> Integer.<span style="color:#50fa7b">parseInt</span>(st.<span style="color:#50fa7b">nextToken</span>());
+</span></span><span style="display:flex;"><span>        l <span style="color:#ff79c6">=</span> Integer.<span style="color:#50fa7b">parseInt</span>(st.<span style="color:#50fa7b">nextToken</span>());
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        positions <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> <span style="color:#8be9fd">int</span><span style="color:#ff79c6">[</span>m<span style="color:#ff79c6">]</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">for</span>(<span style="color:#8be9fd">int</span> i <span style="color:#ff79c6">=</span> 0; i <span style="color:#ff79c6">&lt;</span> m; i<span style="color:#ff79c6">++</span>) {
+</span></span><span style="display:flex;"><span>            positions<span style="color:#ff79c6">[</span>i<span style="color:#ff79c6">]</span> <span style="color:#ff79c6">=</span> Integer.<span style="color:#50fa7b">parseInt</span>(br.<span style="color:#50fa7b">readLine</span>());
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        order <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> <span style="color:#8be9fd">int</span><span style="color:#ff79c6">[</span>n<span style="color:#ff79c6">]</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">for</span>(<span style="color:#8be9fd">int</span> i <span style="color:#ff79c6">=</span> 0; i <span style="color:#ff79c6">&lt;</span> n; i<span style="color:#ff79c6">++</span>) {
+</span></span><span style="display:flex;"><span>            order<span style="color:#ff79c6">[</span>i<span style="color:#ff79c6">]</span> <span style="color:#ff79c6">=</span> Integer.<span style="color:#50fa7b">parseInt</span>(br.<span style="color:#50fa7b">readLine</span>());
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 class="heading" id="요약">
+  요약
+  <a class="anchor" href="#%ec%9a%94%ec%95%bd">#</a>
+</h2>
+<blockquote>
+<p>이번 시간에는 이진 탐색과 이를 응용한 매개 변수 탐색에 대해 알아봤습니다.</p></blockquote>
+<p>쉽다면 쉬운 알고리즘이지만, 매개 변수 탐색 유형의 문제는 학습이 많이 필요합니다. 많은 경우에 최적화를 위해 도입할 수 있는 알고리즘이기에, getUpperBound, getLowerBound를 활용한 풀이에 익숙해지시면 많은 도움이 될 것이라고 생각합니다.</p>
+
+    </div>
+  </article>
+
+  
+
+  
+
+  
+  
+
+<div class="single-pagination">
+    <hr />
+
+    <div class="flexnowrap">
+
+        <div class="single-pagination-prev">
+            
+            <div class="single-pagination-container-prev">
+                <div class="single-pagination-text">←</div>
+                <div class="single-pagination-text">
+                    <a href="/posts/algorithm/binary_search/">
+                        Algorithm - Binary Search - 1편
+                    </a>
+                </div>
+            </div>
+            
+        </div>
+
+        <div class="single-pagination-next">
+            
+        </div>
+
+    </div>
+
+    <hr />
+</div>
+
+
+
+  
+
+  
+
+  
+  <div class="back-to-top">
+    <a href="#top">
+      back to top
+    </a>
   </div>
+  
+
+</div>
+
+
+    </main>
+  </div>
+
+  
+  
+
+
+
+
+
+    
+
+
+
+
+  <footer>
+    
+
+    
+    
+
+
+
+
+
+    
+
+
+
+
+    
+    <p>Powered by
+        <a href="https://gohugo.io/">Hugo</a>
+        and
+        <a href="https://github.com/tomfran/typo">tomfran/typo</a>
+    </p>
+    
+    
+    
+
+
+  </footer>
+
+  
+  <link rel="stylesheet" 
+  href="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.css">
+  
+<script defer 
+  src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.js"></script>
+
+<script defer
+  src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/contrib/auto-render.min.js"
+  onload="renderMathInElement(document.body);"></script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    renderMathInElement(document.body, {
+      delimiters: [
+        { left: "$$", right: "$$", display: true },
+        { left: "$", right: "$", display: false }
+      ]
+    });
+  });
+</script>
+  
+</body>
+
+<script src="/js/theme-switch.js"></script>
+<script defer src="/js/copy-code.js"></script>
+</html>
