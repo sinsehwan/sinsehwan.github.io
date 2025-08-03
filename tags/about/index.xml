@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>About on My website</title>
-    <link>https://sinsehwan.github.io/tags/about/</link>
-    <description>Recent content in About on My website</description>
+    <title>About on A Gaze That Breaks the Egg</title>
+    <link>http://localhost:1313/tags/about/</link>
+    <description>Recent content in About on A Gaze That Breaks the Egg</description>
     <generator>Hugo</generator>
     <language>ko-kr</language>
     <lastBuildDate>Wed, 30 Jul 2025 00:00:00 +0000</lastBuildDate>
-    <atom:link href="https://sinsehwan.github.io/tags/about/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://localhost:1313/tags/about/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>About Me</title>
-      <link>https://sinsehwan.github.io/about/about/</link>
+      <link>http://localhost:1313/about/about/</link>
       <pubDate>Wed, 30 Jul 2025 00:00:00 +0000</pubDate>
-      <guid>https://sinsehwan.github.io/about/about/</guid>
+      <guid>http://localhost:1313/about/about/</guid>
       <description>About Me</description>
     </item>
   </channel>
