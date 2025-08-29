@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="ko-kr"
+  dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width">
+
+
+
+
+
+
+
+
+    
+
+
+
+
+
+
+<link rel="icon" type="image/ico" href="https://sinsehwan.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://sinsehwan.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://sinsehwan.github.io/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="https://sinsehwan.github.io/android-chrome-192x192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="https://sinsehwan.github.io/apple-touch-icon.png">
+
+<meta name="description" content="MSA to k8s Manifest - cloud"/>
+
+
+<meta name="fediverse:creator" content="@username@instance.url">
+
+
+<title>
+    
+    MSA 애플리케이션을 쿠버네티스로 배포하기 - k8s | Sehwan&#39;s Dev Retrospect
+    
+</title>
+
+<link rel="canonical" href="https://sinsehwan.github.io/posts/cloud/msa2k8s/"/>
+
+<meta property="og:url" content="https://sinsehwan.github.io/posts/cloud/msa2k8s/">
+  <meta property="og:site_name" content="Sehwan&#39;s Dev Retrospect">
+  <meta property="og:title" content="MSA 애플리케이션을 쿠버네티스로 배포하기 - k8s">
+  <meta property="og:description" content="MSA to k8s Manifest - cloud">
+  <meta property="og:locale" content="ko_kr">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2025-08-29T00:00:00+00:00">
+    <meta property="article:modified_time" content="2025-08-29T00:00:00+00:00">
+    <meta property="article:tag" content="Cloud">
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/assets/combined.min.fc5a44152c30c21bef13cba5205c8eddd1f54213723dfec49cb38631ef05a293.css" media="all">
+
+
+
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-xxxxxxxxx"></script>
+      <script>
+        var doNotTrack = false;
+        if ( false ) {
+          var dnt = (navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack);
+          var doNotTrack = (dnt == "1" || dnt == "yes");
+        }
+        if (!doNotTrack) {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-xxxxxxxxx');
+        }
+      </script>
+
+
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+</head>
+
+
+
+
+
+
+
+<body class="dark">
+
+  <div class="content">
+    <header>
+      
+
+<div class="header">
+
+    
+
+    <h1 class="header-title">
+        <a href="https://sinsehwan.github.io/">Sehwan&#39;s Dev Retrospect</a>
+    </h1>
+
+    <div class="header-menu">
+        
+
+        
+        
+
+        <p
+            class="small ">
+            <a href="/" >
+                /home
+            </a>
+        </p>
+        
+
+        <p
+            class="small ">
+            <a href="/posts" >
+                /posts
+            </a>
+        </p>
+        
+
+        <p
+            class="small ">
+            <a href="/tags/" >
+                /tags
+            </a>
+        </p>
+        
+
+        <p
+            class="small ">
+            <a href="/about" >
+                /about
+            </a>
+        </p>
+        
+        
+    </div>
+
+    
+
+</div>
+
+    </header>
+
+    <main class="main">
+      
+
+
+
+
+<div class="breadcrumbs"><a href="/">Home</a><span class="breadcrumbs-separator">/</span><a href="/posts/">Posts</a><span class="breadcrumbs-separator">/</span>
+        <a href="/posts/cloud/msa2k8s/">MSA 애플리케이션을 쿠버네티스로 배포하기 - k8s</a></div>
+
+
+<div  class="autonumber" >
+  <article>
+    <header class="single-intro-container">
+        
+        <h1 class="single-title">MSA 애플리케이션을 쿠버네티스로 배포하기 - k8s</h1>
+        <p class="single-summary">MSA 애플리케이션을 쿠버네티스로 배포하기 - k8s</p>
+        
+        <div class="single-subsummary">
+          
+          <div>
+            
+            <p class="author">Sin SeHwan </p>
+            
+            <p class="single-date">
+              <time datetime="2025-08-29T00:00:00&#43;00:00">August 29, 2025</time>
+              &nbsp; · &nbsp;2 min read
+            </p>
+          </div>
+        </div>
+        
+    </header>    
+        <div class="single-tags"><span>
+                  <a href="https://sinsehwan.github.io/tags/cloud/">#Cloud</a>
+                </span>
+        </div>
+      <aside class="toc">
+        <p><strong>Table of contents</strong></p>
+        <nav id="TableOfContents">
+  <ul>
+    <li><a href="#배포-환경">배포 환경</a></li>
+    <li><a href="#조직-내부-정책">조직 내부 정책</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#배포-환경-1">배포 환경</a></li>
+    <li><a href="#조직-내부-정책-1">조직 내부 정책</a></li>
+  </ul>
+</nav>
+      </aside>
+    
+    <div class="single-content">
+      <h1 class="heading" id="필요한-항목과-이유">
+  필요한 항목과 이유
+  <a class="anchor" href="#%ed%95%84%ec%9a%94%ed%95%9c-%ed%95%ad%eb%aa%a9%ea%b3%bc-%ec%9d%b4%ec%9c%a0">#</a>
+</h1>
+<h2 class="heading" id="배포-환경">
+  배포 환경
+  <a class="anchor" href="#%eb%b0%b0%ed%8f%ac-%ed%99%98%ea%b2%bd">#</a>
+</h2>
+<blockquote>
+<p>MSA 애플리케이션 정의</p></blockquote>
+<ul>
+<li>
+<p>서비스 설명</p>
+<ul>
+<li>서비스 이름 및 서비스를 구성하는 마이크로서비스들의 목록</li>
+</ul>
+</li>
+<li>
+<p>의존 서비스</p>
+<ul>
+<li>장애 발생 시 의존성을 파악하기 위해 필요</li>
+</ul>
+</li>
+<li>
+<p>볼륨 구성</p>
+<ul>
+<li>데이터 저장이 필요한 경우, 볼륨 종류, 크기, 접근 모드 명시</li>
+</ul>
+</li>
+<li>
+<p>내부 서비스 포트(Service Port)</p>
+<ul>
+<li>파드는 동적으로 IP를 할당받기에 직접 접근하기가 어렵다. Cluster의 IP와 파드를 연결 주소를 고정</li>
+</ul>
+</li>
+<li>
+<p>외부 노출 방식</p>
+<ul>
+<li>서비스의 공개 범위에 따라 외부 노출 방식 결정 필요
+<ul>
+<li>ClusterIP : 클러스터 내부에서만 접근</li>
+<li>NodePort : 테스트나 간단한 외부 노출 - 테스트 시나리오에서는 해당 방식 사용 예정</li>
+<li>LoadBalancer : 클라우드 환경에서 외부 로드밸런서 도입</li>
+<li>Ingress 하나의 IP로 여러 도메인/경로 기반 라우팅 제공</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>마이크로서비스 기본 정보</p></blockquote>
+<ul>
+<li>
+<p>컨테이너 이미지 및 버전 정보</p>
+<ul>
+<li>쿠버네티스가 어떤 이미지를 가져와서 실행해야 하는지 결정 필요.</li>
+</ul>
+</li>
+<li>
+<p>마이크로서비스 포트</p>
+<ul>
+<li>마이크로서비스가 실제 사용하는 포트.</li>
+</ul>
+</li>
+<li>
+<p>환경 변수</p>
+<ul>
+<li>서비스 동작에 필요한 설정 값.
+<ul>
+<li>보안 수준에 따라 ConfigMap과 Secret으로 구분</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>리소스 설정</p>
+<ul>
+<li>컨테이너가 안정적으로 동작하기 위한 기본적인 리소스 요청 및 제한</li>
+</ul>
+</li>
+<li>
+<p>복제 수(Replicas)</p>
+<ul>
+<li>기본적으로 실행할 Pod의 개수</li>
+</ul>
+</li>
+</ul>
+<h2 class="heading" id="조직-내부-정책">
+  조직 내부 정책
+  <a class="anchor" href="#%ec%a1%b0%ec%a7%81-%eb%82%b4%eb%b6%80-%ec%a0%95%ec%b1%85">#</a>
+</h2>
+<blockquote>
+<p>조직 내부 정책</p></blockquote>
+<ul>
+<li>레이블 규칙
+<ul>
+<li>리소스를 팀, 프로젝트 등의 기준으로 식별하고 특정 그룹에만 정책을 반영하기 위한 요소</li>
+</ul>
+</li>
+<li>리소스 할당 기준
+<ul>
+<li>서비스에 따라 할당 가능한 리소스의 최소/최대 규정
+<ul>
+<li>동적 운영 정보 기반 개선의 기준 정보</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>보안 및 운영 정책
+<ul>
+<li>보안과 안정성을 위한 규정 및 제한사항
+<ul>
+<li>e.g. latest 태그 사용 금지</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h1 class="heading" id="필요한-항목이-배포-파일에서-반영돼야-하는-곳">
+  필요한 항목이 배포 파일에서 반영돼야 하는 곳
+  <a class="anchor" href="#%ed%95%84%ec%9a%94%ed%95%9c-%ed%95%ad%eb%aa%a9%ec%9d%b4-%eb%b0%b0%ed%8f%ac-%ed%8c%8c%ec%9d%bc%ec%97%90%ec%84%9c-%eb%b0%98%ec%98%81%eb%8f%bc%ec%95%bc-%ed%95%98%eb%8a%94-%ea%b3%b3">#</a>
+</h1>
+<h2 class="heading" id="배포-환경-1">
+  배포 환경
+  <a class="anchor" href="#%eb%b0%b0%ed%8f%ac-%ed%99%98%ea%b2%bd-1">#</a>
+</h2>
+<blockquote>
+<p>MSA 애플리케이션 정의</p></blockquote>
+
+<div class="table-outer">
+    <table>
+        <thead>
+            <tr>
+                <th>항목</th>
+                <th>Kubernetes 리소스</th>
+                <th>설명</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>서비스 설명</td>
+                <td>Deployment, Service</td>
+                <td>서비스 이름 및 서비스 구성 요소 (metadata.name, metadata.labels)</td>
+            </tr>
+            <tr>
+                <td>의존 서비스</td>
+                <td>ConfigMap</td>
+                <td>각각의 마이크로서비스가 의존하는 다른 서비스의 주소나 설정 정보</td>
+            </tr>
+            <tr>
+                <td>볼륨 구성</td>
+                <td>Deployment</td>
+                <td>컨테이너에 마운트 할 볼륨 정보 (volumeMounts)</td>
+            </tr>
+            <tr>
+                <td>내부 서비스 포트</td>
+                <td>Service</td>
+                <td>클러스터 내부에서 다른 서비스들이 접근할 수 있는 고유 포트 정보</td>
+            </tr>
+            <tr>
+                <td>외부 노출 방식</td>
+                <td>Service</td>
+                <td>Service의 type(NodePort, LoadBalancer)을 지정하거나 Ingress 리소스 사용</td>
+            </tr>
+        </tbody>
+    </table>
+</div><blockquote>
+<p>마이크로서비스 기본 정보</p></blockquote>
+
+<div class="table-outer">
+    <table>
+        <thead>
+            <tr>
+                <th>항목</th>
+                <th>Kubernetes 리소스</th>
+                <th>설명</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>컨테이너 이미지 경로 및 버전</td>
+                <td>Deployment</td>
+                <td>실행할 컨테이너 이미지 경로와 버전 (spec.template.spec.containers.image)</td>
+            </tr>
+            <tr>
+                <td>마이크로서비스 포트</td>
+                <td>Deployment</td>
+                <td>컨테이너가 마이크로서비스와 연결할 포트 지정(spec.template.spec.containers.ports.containerPort)</td>
+            </tr>
+            <tr>
+                <td>환경 변수</td>
+                <td>ConfigMap, Secret</td>
+                <td>서비스 동작에 필요한 설정 값</td>
+            </tr>
+            <tr>
+                <td>리소스 설정</td>
+                <td>Deployment</td>
+                <td>CPU/메모리 리소스 요청(requests), 한계(limits) 설정 (spec.template.spec.containers.resources)</td>
+            </tr>
+            <tr>
+                <td>복제 수 (Replicas)</td>
+                <td>Deployment</td>
+                <td>파드 수 지정 (spec.replicas)</td>
+            </tr>
+        </tbody>
+    </table>
+</div><h2 class="heading" id="조직-내부-정책-1">
+  조직 내부 정책
+  <a class="anchor" href="#%ec%a1%b0%ec%a7%81-%eb%82%b4%eb%b6%80-%ec%a0%95%ec%b1%85-1">#</a>
+</h2>
+<blockquote>
+<p>조직 내부 정책</p></blockquote>
+
+<div class="table-outer">
+    <table>
+        <thead>
+            <tr>
+                <th>항목</th>
+                <th>Kubernetes 리소스</th>
+                <th>설명</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>레이블 규칙</td>
+                <td>모든 리소스</td>
+                <td>조직 규칙에 맞게 label 추가 (metadata.labels)</td>
+            </tr>
+            <tr>
+                <td>리소스 할당 기준</td>
+                <td>Deployment</td>
+                <td>팀/프로젝트 단위로 할당 가능한 리소스의 총량이나 개별 컨테이너의 최소/최대 요구량 규정</td>
+            </tr>
+            <tr>
+                <td>보안 및 운영 정책</td>
+                <td>Deployment, SecurityContext</td>
+                <td>보안과 안정성을 위한 규정 및 제한사항(e.g. latest 태그 사용 금지)</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+    </div>
+  </article>
+
+  
+
+  
+
+  
+  
+
+<div class="single-pagination">
+    <hr />
+
+    <div class="flexnowrap">
+
+        <div class="single-pagination-prev">
+            
+            <div class="single-pagination-container-prev">
+                <div class="single-pagination-text">←</div>
+                <div class="single-pagination-text">
+                    <a href="/posts/algorithm/binary_search_2/">
+                        Algorithm - Binary Search - 2편
+                    </a>
+                </div>
+            </div>
+            
+        </div>
+
+        <div class="single-pagination-next">
+            
+        </div>
+
+    </div>
+
+    <hr />
+</div>
+
+
+
+  
+
+  
+
+  
+  <div class="back-to-top">
+    <a href="#top">
+      back to top
+    </a>
+  </div>
+  
+
+</div>
+
+
+    </main>
+  </div>
+
+  
+  
+
+
+
+
+
+    
+
+
+
+
+  <footer>
+    
+
+    
+    
+
+
+
+
+
+    
+
+
+
+
+    
+    <p>Powered by
+        <a href="https://gohugo.io/">Hugo</a>
+        and
+        <a href="https://github.com/tomfran/typo">tomfran/typo</a>
+    </p>
+    
+    
+    
+
+
+  </footer>
+
+  
+  <link rel="stylesheet" 
+  href="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.css">
+  
+<script defer 
+  src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.js"></script>
+
+<script defer
+  src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/contrib/auto-render.min.js"
+  onload="renderMathInElement(document.body);"></script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    renderMathInElement(document.body, {
+      delimiters: [
+        { left: "$$", right: "$$", display: true },
+        { left: "$", right: "$", display: false }
+      ]
+    });
+  });
+</script>
+  
+</body>
+
+<script src="/js/theme-switch.js"></script>
+<script defer src="/js/copy-code.js"></script>
+</html>
