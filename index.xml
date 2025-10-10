@@ -2,52 +2,66 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Home on Sehwan&#39;s Dev Retrospect</title>
-    <link>https://sinsehwan.github.io/</link>
+    <link>http://localhost:1313/</link>
     <description>Recent content in Home on Sehwan&#39;s Dev Retrospect</description>
     <generator>Hugo</generator>
     <language>ko-kr</language>
-    <lastBuildDate>Fri, 29 Aug 2025 00:00:00 +0000</lastBuildDate>
-    <atom:link href="https://sinsehwan.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 10 Oct 2025 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>ORM(JPA)의 필요성 - 1</title>
+      <link>http://localhost:1313/posts/backend/jpa_orm_%ED%95%84%EC%9A%94%EC%84%B11/</link>
+      <pubDate>Fri, 10 Oct 2025 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/backend/jpa_orm_%ED%95%84%EC%9A%94%EC%84%B11/</guid>
+      <description>SQL을 직접 다룰 때 발생하는 문제점</description>
+    </item>
+    <item>
+      <title>ORM(JPA)의 필요성 - 2</title>
+      <link>http://localhost:1313/posts/backend/jpa_orm_%ED%95%84%EC%9A%94%EC%84%B12/</link>
+      <pubDate>Fri, 10 Oct 2025 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/backend/jpa_orm_%ED%95%84%EC%9A%94%EC%84%B12/</guid>
+      <description>객체 중심 모델과 데이터 중심 모델의 패러다임 차이</description>
+    </item>
     <item>
       <title>MSA 애플리케이션을 쿠버네티스로 배포하기 - k8s</title>
-      <link>https://sinsehwan.github.io/posts/cloud/msa2k8s/</link>
+      <link>http://localhost:1313/posts/cloud/msa2k8s/</link>
       <pubDate>Fri, 29 Aug 2025 00:00:00 +0000</pubDate>
-      <guid>https://sinsehwan.github.io/posts/cloud/msa2k8s/</guid>
+      <guid>http://localhost:1313/posts/cloud/msa2k8s/</guid>
       <description>MSA 애플리케이션을 쿠버네티스로 배포하기 - k8s</description>
     </item>
     <item>
       <title>Algorithm - Binary Search - 2편</title>
-      <link>https://sinsehwan.github.io/posts/algorithm/binary_search_2/</link>
+      <link>http://localhost:1313/posts/algorithm/binary_search_2/</link>
       <pubDate>Sun, 03 Aug 2025 00:00:00 +0000</pubDate>
-      <guid>https://sinsehwan.github.io/posts/algorithm/binary_search_2/</guid>
+      <guid>http://localhost:1313/posts/algorithm/binary_search_2/</guid>
       <description>Binary Search (이진 탐색)[2] - Java</description>
     </item>
     <item>
       <title>About Me</title>
-      <link>https://sinsehwan.github.io/about/about/</link>
+      <link>http://localhost:1313/about/about/</link>
       <pubDate>Wed, 30 Jul 2025 00:00:00 +0000</pubDate>
-      <guid>https://sinsehwan.github.io/about/about/</guid>
+      <guid>http://localhost:1313/about/about/</guid>
       <description>About Me</description>
     </item>
     <item>
       <title>Algorithm - Binary Search - 1편</title>
-      <link>https://sinsehwan.github.io/posts/algorithm/binary_search/</link>
+      <link>http://localhost:1313/posts/algorithm/binary_search/</link>
       <pubDate>Sun, 27 Jul 2025 00:00:00 +0000</pubDate>
-      <guid>https://sinsehwan.github.io/posts/algorithm/binary_search/</guid>
+      <guid>http://localhost:1313/posts/algorithm/binary_search/</guid>
       <description>Binary Search (이진 탐색)[1] - Java</description>
     </item>
     <item>
       <title>회고 - 1편</title>
-      <link>https://sinsehwan.github.io/posts/%ED%9A%8C%EA%B3%A0/test/</link>
+      <link>http://localhost:1313/posts/%ED%9A%8C%EA%B3%A0/test/</link>
       <pubDate>Sun, 27 Jul 2025 00:00:00 +0000</pubDate>
-      <guid>https://sinsehwan.github.io/posts/%ED%9A%8C%EA%B3%A0/test/</guid>
+      <guid>http://localhost:1313/posts/%ED%9A%8C%EA%B3%A0/test/</guid>
       <description>Binary Search (이진 탐색)[1] - Java</description>
     </item>
     <item>
       <title>Algorithm - Union-Find</title>
-      <link>https://sinsehwan.github.io/posts/algorithm/union_find/</link>
+      <link>http://localhost:1313/posts/algorithm/union_find/</link>
       <pubDate>Fri, 25 Jul 2025 00:00:00 +0000</pubDate>
-      <guid>https://sinsehwan.github.io/posts/algorithm/union_find/</guid>
+      <guid>http://localhost:1313/posts/algorithm/union_find/</guid>
       <description>Union-Find (분리집합) - Java</description>
     </item>
   </channel>

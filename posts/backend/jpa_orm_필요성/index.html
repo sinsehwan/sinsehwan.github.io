@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="ko-kr"
+  dir="ltr">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width">
+
+
+
+
+
+
+
+
+    
+
+
+
+
+
+
+<link rel="icon" type="image/ico" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="http://localhost:1313/android-chrome-192x192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="http://localhost:1313/apple-touch-icon.png">
+
+<meta name="description" content="SQL을 직접 다룰 때 발생하는 문제점 - backend"/>
+
+
+<meta name="fediverse:creator" content="@username@instance.url">
+
+
+<title>
+    
+    ORM(JPA)의 필요성 | Sehwan&#39;s Dev Retrospect
+    
+</title>
+
+<link rel="canonical" href="http://localhost:1313/posts/backend/jpa_orm_%ED%95%84%EC%9A%94%EC%84%B1/"/>
+
+<meta property="og:url" content="http://localhost:1313/posts/backend/jpa_orm_%ED%95%84%EC%9A%94%EC%84%B1/">
+  <meta property="og:site_name" content="Sehwan&#39;s Dev Retrospect">
+  <meta property="og:title" content="ORM(JPA)의 필요성">
+  <meta property="og:description" content="SQL을 직접 다룰 때 발생하는 문제점 - backend">
+  <meta property="og:locale" content="ko_kr">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2025-09-16T00:00:00+00:00">
+    <meta property="article:modified_time" content="2025-09-16T00:00:00+00:00">
+    <meta property="article:tag" content="Backend">
+    <meta property="article:tag" content="Java">
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/assets/combined.min.fc5a44152c30c21bef13cba5205c8eddd1f54213723dfec49cb38631ef05a293.css" media="all">
+
+
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+</head>
+
+
+
+
+
+
+
+<body class="dark">
+
+  <div class="content">
+    <header>
+      
+
+<div class="header">
+
+    
+
+    <h1 class="header-title">
+        <a href="http://localhost:1313/">Sehwan&#39;s Dev Retrospect</a>
+    </h1>
+
+    <div class="header-menu">
+        
+
+        
+        
+
+        <p
+            class="small ">
+            <a href="/" >
+                /home
+            </a>
+        </p>
+        
+
+        <p
+            class="small ">
+            <a href="/posts" >
+                /posts
+            </a>
+        </p>
+        
+
+        <p
+            class="small ">
+            <a href="/tags/" >
+                /tags
+            </a>
+        </p>
+        
+
+        <p
+            class="small ">
+            <a href="/about" >
+                /about
+            </a>
+        </p>
+        
+        
+    </div>
+
+    
+
+</div>
+
+    </header>
+
+    <main class="main">
+      
+
+
+
+
+<div class="breadcrumbs"><a href="/">Home</a><span class="breadcrumbs-separator">/</span><a href="/posts/">Posts</a><span class="breadcrumbs-separator">/</span>
+        <a href="/posts/backend/jpa_orm_%ED%95%84%EC%9A%94%EC%84%B1/">ORM(JPA)의 필요성</a></div>
+
+
+<div  class="autonumber" >
+  <article>
+    <header class="single-intro-container">
+        
+        <h1 class="single-title">ORM(JPA)의 필요성</h1>
+        <p class="single-summary">SQL을 직접 다룰 때 발생하는 문제점</p>
+        
+        <div class="single-subsummary">
+          
+          <div>
+            
+            <p class="author">Sin SeHwan </p>
+            
+            <p class="single-date">
+              <time datetime="2025-09-16T00:00:00&#43;00:00">September 16, 2025</time>
+              &nbsp; · &nbsp;3 min read
+            </p>
+          </div>
+        </div>
+        
+    </header>    
+        <div class="single-tags"><span>
+                  <a href="http://localhost:1313/tags/backend/">#Backend</a>
+                </span><span>
+                  <a href="http://localhost:1313/tags/java/">#Java</a>
+                </span>
+        </div>
+      <aside class="toc">
+        <p><strong>Table of contents</strong></p>
+        <nav id="TableOfContents">
+  <ul>
+    <li><a href="#개념">개념</a>
+      <ul>
+        <li><a href="#orm">ORM</a></li>
+        <li><a href="#jpa">JPA</a></li>
+      </ul>
+    </li>
+    <li><a href="#sql을-직접-다룰-때-발생하는-문제점">SQL을 직접 다룰 때 발생하는 문제점</a>
+      <ul>
+        <li><a href="#번거로운-변환-작업">번거로운 변환 작업</a></li>
+        <li><a href="#sql에-의존적인-개발">SQL에 의존적인 개발</a></li>
+      </ul>
+    </li>
+    <li><a href="#요약">요약</a></li>
+  </ul>
+</nav>
+      </aside>
+    
+    <div class="single-content">
+      <h1 class="heading" id="ormjpa의-필요성---1">
+  ORM(JPA)의 필요성 - 1
+  <a class="anchor" href="#ormjpa%ec%9d%98-%ed%95%84%ec%9a%94%ec%84%b1---1">#</a>
+</h1>
+<blockquote>
+<p>ORM, JPA 둘 다 자바에서 데이터베이스를 다뤄 본 분들은 한 번쯤은 들어봤거나, 사용해 보셨을 거라고 생각합니다. 그러나 해당 기술이 어떤 장점이 있냐고 물어봤을 때 이에 답하기는 쉽지 않습니다. 이번 시간에는 ORM(JPA)의 필요성에 대해 알아봅시다.</p></blockquote>
+<h2 class="heading" id="개념">
+  개념
+  <a class="anchor" href="#%ea%b0%9c%eb%85%90">#</a>
+</h2>
+<h3 class="heading" id="orm">
+  ORM
+  <a class="anchor" href="#orm">#</a>
+</h3>
+<ul>
+<li>객체와 관계형 데이터베이스 간의 간극을 좁혀주는 기술입니다.</li>
+</ul>
+<h3 class="heading" id="jpa">
+  JPA
+  <a class="anchor" href="#jpa">#</a>
+</h3>
+<ul>
+<li>
+<p>JPA는 자바 진형에서 고안한 ORM 기술 표준입니다.</p>
+</li>
+<li>
+<p>스프링 진영에서도 스프링 데이터 JPA라는 기술로 JPA를 지원합니다.</p>
+</li>
+</ul>
+<blockquote>
+<p>객체와 관게형 데이터베이스 간의 간극이란 뭘 말하는 것일까요? 먼저 순수 SQL을 직접 다룰 때 발생하는 문제점을 살펴봅시다</p></blockquote>
+<h2 class="heading" id="sql을-직접-다룰-때-발생하는-문제점">
+  SQL을 직접 다룰 때 발생하는 문제점
+  <a class="anchor" href="#sql%ec%9d%84-%ec%a7%81%ec%a0%91-%eb%8b%a4%eb%a3%b0-%eb%95%8c-%eb%b0%9c%ec%83%9d%ed%95%98%eb%8a%94-%eb%ac%b8%ec%a0%9c%ec%a0%90">#</a>
+</h2>
+<ul>
+<li>RDBMS(관계형 데이터베이스)
+<ul>
+<li>가장 대중적이고 신뢰성 높은 데이터 저장소</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>자바로 개발하는 애플리케이션은 RDBMS를 데이터 저장소로 사용하는 경우가 많습니다.</p></blockquote>
+<p>데이터베이스의 데이터를 관리하기 위해서는 SQL문을 사용해야 하는데, 자바로 작성한 애플리케이션은 이를 위해 JDBC API를 사용해서 SQL문을 데이터베이스에 전달합니다.</p>
+<h3 class="heading" id="번거로운-변환-작업">
+  번거로운 변환 작업
+  <a class="anchor" href="#%eb%b2%88%ea%b1%b0%eb%a1%9c%ec%9a%b4-%eb%b3%80%ed%99%98-%ec%9e%91%ec%97%85">#</a>
+</h3>
+<p>첫 번째 문제점은 변환 작업 과정이 번거롭다는 것입니다.</p>
+<h4 class="heading" id="회원-관리-기능-crud">
+  회원 관리 기능 CRUD
+  <a class="anchor" href="#%ed%9a%8c%ec%9b%90-%ea%b4%80%eb%a6%ac-%ea%b8%b0%eb%8a%a5-crud">#</a>
+</h4>
+<p>Java에서 SQL을 직접 다루는 경우를 먼저 살펴봅시다. 이를 위해 회원 관리 예제를 생각해보죠. DAO는 Data Access Object의 약자로, 말 그대로 데이터 접근 객체임을 의미합니다.</p>
+<blockquote>
+<p>Member.class</p></blockquote>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">Member</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">private</span> String memberId;
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">private</span> String name;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><blockquote>
+<p>MemberDAO.class</p></blockquote>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">MemberDAO</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">public</span> Member <span style="color:#50fa7b">find</span>(String memberId) {
+</span></span><span style="display:flex;"><span>        <span style="color:#6272a4">// ...</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">public</span> Member <span style="color:#50fa7b">save</span>(Member member) {
+</span></span><span style="display:flex;"><span>        <span style="color:#6272a4">// ...</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h5 class="heading" id="find">
+  find()
+  <a class="anchor" href="#find">#</a>
+</h5>
+<ol>
+<li>회원 조회 SQL</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>String sql <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;SELECT member_id, name 
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c">            FROM member m
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c">            WHERE member_id = ?&#34;</span>
+</span></span></code></pre></div><ol start="2">
+<li>JDBC API</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>ResultSet rs <span style="color:#ff79c6">=</span> stmt.<span style="color:#50fa7b">executeQuery</span>(sql);
+</span></span></code></pre></div><ol start="3">
+<li>조회 결과 매핑</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>String memberId <span style="color:#ff79c6">=</span> rs.<span style="color:#50fa7b">getString</span>(<span style="color:#f1fa8c">&#34;member_id&#34;</span>);
+</span></span><span style="display:flex;"><span>String name <span style="color:#ff79c6">=</span> rs.<span style="color:#50fa7b">getString</span>(<span style="color:#f1fa8c">&#34;name&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Member member <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> Member(memberId, name)
+</span></span></code></pre></div><h5 class="heading" id="save">
+  save()
+  <a class="anchor" href="#save">#</a>
+</h5>
+<ol>
+<li>회원 등록 SQL</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>String sql <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;INSERT INTO member(member_id, name) VALUES (?, ?)&#34;</span>
+</span></span></code></pre></div><ol start="2">
+<li>JDBC API</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>pstmt.<span style="color:#50fa7b">setString</span>(1, member.<span style="color:#50fa7b">getMemberId</span>())
+</span></span><span style="display:flex;"><span>pstmt.<span style="color:#50fa7b">setString</span>(2, member.<span style="color:#50fa7b">getName</span>())
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>pstmt.<span style="color:#50fa7b">execute</span>(sql);
+</span></span></code></pre></div><p>단순 회원 조회 및 등록인데도 여러 단계를 거쳐야 한다는 것을 알 수 있습니다. 이처럼 데이터 접근 계층을 설계하는 것은 매우 번거롭습니다.</p>
+<p>우리가 흔히 Collection이나 배열 형태로 객체를 다룰 때와는 느낌이 많이 다릅니다. 예를 들어 List에서 요소를 추가하기 위해서는 단순히 다음과 같이 한 줄로 처리할 수 있습니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>list.<span style="color:#50fa7b">add</span>(member);
+</span></span></code></pre></div><p>데이터베이스 연산을 자바로 수행할 때는 왜 이렇게 복잡하게 진행해야 할까요?</p>
+<p>데이터베이스는 객체 구조와는 다른 데이터 중심의 구조를 가지기 때문에 객체를 그대로 데이터베이스에 저장하거나 조회하는 데 사용할 수 없습니다.</p>
+<h3 class="heading" id="sql에-의존적인-개발">
+  SQL에 의존적인 개발
+  <a class="anchor" href="#sql%ec%97%90-%ec%9d%98%ec%a1%b4%ec%a0%81%ec%9d%b8-%ea%b0%9c%eb%b0%9c">#</a>
+</h3>
+<h4 class="heading" id="테이블-컬럼-변경">
+  테이블 컬럼 변경
+  <a class="anchor" href="#%ed%85%8c%ec%9d%b4%eb%b8%94-%ec%bb%ac%eb%9f%bc-%eb%b3%80%ea%b2%bd">#</a>
+</h4>
+<p>위의 예시에서, 만약 Member 테이블에 전화번호 컬럼이 추가된다면 어떻게 될까요?</p>
+<p>저장 시 사용하는 INSERT 문, 조회 시 사용하는 SELECT 문에 대한 수정 뿐만 아니라 이를 다시 매핑하는 자바 코드까지 전부 수정해야 합니다. 즉, SQL에 의존적인 개발은 유지보수가 힘들다는 문제점이 있습니다.</p>
+<h4 class="heading" id="연관된-객체-관리">
+  연관된 객체 관리
+  <a class="anchor" href="#%ec%97%b0%ea%b4%80%eb%90%9c-%ea%b0%9d%ec%b2%b4-%ea%b4%80%eb%a6%ac">#</a>
+</h4>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">Member</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">private</span> String memberId;
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">private</span> String name;
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">private</span> String tel;
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">private</span> Team team; <span style="color:#6272a4">// 추가</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">Team</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">private</span> String teamName;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>만약 &lsquo;팀&rsquo;이라는 객체가 존재하고, 각 회원 객체가 특정한 팀에 소속되어 있다고 할 때, DB에서 특정 회원의 팀을 조회하려면 어떻게 해야 할까요?</p>
+<p>이를 위해선 위의 find()함수만으로는 구현이 불가능합니다. 왜냐하면, find()함수에서의 sql을 보면 team에 관한 정보를 가져오는 내용이 없기 때문이죠.</p>
+<p>이를 위해서는 다음과 같은 team에 대한 JOIN 절이 포함된 별도의 SQL문이 필요합니다.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span><span style="color:#ff79c6">SELECT</span> m.member_id, m.name, m.tel, t.team_id, t.team_name
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">FROM</span> member m
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">JOIN</span> team t
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">ON</span> m.team_id <span style="color:#ff79c6">=</span> t.team_id
+</span></span></code></pre></div><p>연관된 객체가 정상적으로 조회되는지 알기 위해서는 사용하는 SQL문을 확인해야 합니다.</p>
+<blockquote>
+<p>즉, DAO를 통해 애플리케이션 데이터 접근을 추상화하더라도 결국 DAO 로직 내부에 존재하는 SQL문을 확인해야 정확한 동작을 알 수 있습니다.</p></blockquote>
+<h2 class="heading" id="요약">
+  요약
+  <a class="anchor" href="#%ec%9a%94%ec%95%bd">#</a>
+</h2>
+<p>SQL문을 직접 다뤄서 개발하는 경우, 요약하면 다음과 같은 문제가 발생합니다.</p>
+<ul>
+<li>완전한 계층 분리가 어렵다</li>
+<li>SQL에 의존적이고 유지보수가 어렵다.</li>
+</ul>
+<p>다음 시간에는 이런 일이 발생하게 되는 원인을 알기 위해 조금 더 구체적으로 객체와 RDBMS의 패러다임 불일치 문제에 대해 알아봅시다</p>
+
+    </div>
+  </article>
+
+  
+
+  
+
+  
+  
+
+<div class="single-pagination">
+    <hr />
+
+    <div class="flexnowrap">
+
+        <div class="single-pagination-prev">
+            
+            <div class="single-pagination-container-prev">
+                <div class="single-pagination-text">←</div>
+                <div class="single-pagination-text">
+                    <a href="/posts/cloud/msa2k8s/">
+                        MSA 애플리케이션을 쿠버네티스로 배포하기 - k8s
+                    </a>
+                </div>
+            </div>
+            
+        </div>
+
+        <div class="single-pagination-next">
+            
+        </div>
+
+    </div>
+
+    <hr />
+</div>
+
+
+
+  
+
+  
+
+  
+  <div class="back-to-top">
+    <a href="#top">
+      back to top
+    </a>
+  </div>
+  
+
+</div>
+
+
+    </main>
+  </div>
+
+  
+  
+
+
+
+
+
+    
+
+
+
+
+  <footer>
+    
+
+    
+    
+
+
+
+
+
+    
+
+
+
+
+    
+    <p>Powered by
+        <a href="https://gohugo.io/">Hugo</a>
+        and
+        <a href="https://github.com/tomfran/typo">tomfran/typo</a>
+    </p>
+    
+    
+    
+
+
+  </footer>
+
+  
+  <link rel="stylesheet" 
+  href="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.css">
+  
+<script defer 
+  src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.js"></script>
+
+<script defer
+  src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/contrib/auto-render.min.js"
+  onload="renderMathInElement(document.body);"></script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    renderMathInElement(document.body, {
+      delimiters: [
+        { left: "$$", right: "$$", display: true },
+        { left: "$", right: "$", display: false }
+      ]
+    });
+  });
+</script>
+  
+</body>
+
+<script src="/js/theme-switch.js"></script>
+<script defer src="/js/copy-code.js"></script>
+</html>
