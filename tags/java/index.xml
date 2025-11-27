@@ -6,8 +6,22 @@
     <description>Recent content in Java on Sehwan&#39;s Dev Retrospect</description>
     <generator>Hugo</generator>
     <language>ko-kr</language>
-    <lastBuildDate>Fri, 10 Oct 2025 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 20 Nov 2025 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://sinsehwan.github.io/tags/java/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>CORS, CSRF, XSS</title>
+      <link>https://sinsehwan.github.io/posts/backend/cors_csrf_xss/</link>
+      <pubDate>Thu, 20 Nov 2025 00:00:00 +0000</pubDate>
+      <guid>https://sinsehwan.github.io/posts/backend/cors_csrf_xss/</guid>
+      <description>배포 시 고려해야 하는 문제 알아보기(CORS, CSRF, XSS)</description>
+    </item>
+    <item>
+      <title>DB Index 장단점</title>
+      <link>https://sinsehwan.github.io/posts/backend/db_index/</link>
+      <pubDate>Thu, 20 Nov 2025 00:00:00 +0000</pubDate>
+      <guid>https://sinsehwan.github.io/posts/backend/db_index/</guid>
+      <description>B+Tree로 알아보는 DB Index의 특징</description>
+    </item>
     <item>
       <title>ORM(JPA)의 필요성 - 1</title>
       <link>https://sinsehwan.github.io/posts/backend/jpa_orm_%ED%95%84%EC%9A%94%EC%84%B11/</link>

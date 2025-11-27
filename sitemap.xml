@@ -3,24 +3,30 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://sinsehwan.github.io/tags/backend/</loc>
-    <lastmod>2025-10-10T00:00:00+00:00</lastmod>
+    <lastmod>2025-11-20T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://sinsehwan.github.io/posts/backend/cors_csrf_xss/</loc>
+    <lastmod>2025-11-20T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://sinsehwan.github.io/posts/backend/db_index/</loc>
+    <lastmod>2025-11-20T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://sinsehwan.github.io/</loc>
-    <lastmod>2025-10-10T00:00:00+00:00</lastmod>
+    <lastmod>2025-11-20T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://sinsehwan.github.io/tags/java/</loc>
-    <lastmod>2025-10-10T00:00:00+00:00</lastmod>
+    <lastmod>2025-11-20T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://sinsehwan.github.io/posts/</loc>
+    <lastmod>2025-11-20T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://sinsehwan.github.io/tags/</loc>
+    <lastmod>2025-11-20T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://sinsehwan.github.io/posts/backend/jpa_orm_%ED%95%84%EC%9A%94%EC%84%B11/</loc>
     <lastmod>2025-10-10T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://sinsehwan.github.io/posts/backend/jpa_orm_%ED%95%84%EC%9A%94%EC%84%B12/</loc>
-    <lastmod>2025-10-10T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://sinsehwan.github.io/posts/</loc>
-    <lastmod>2025-10-10T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://sinsehwan.github.io/tags/</loc>
     <lastmod>2025-10-10T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://sinsehwan.github.io/tags/cloud/</loc>
