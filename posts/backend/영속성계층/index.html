@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="ko-kr"
+  dir="ltr">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width">
+
+
+
+
+
+
+
+
+    
+
+
+
+
+
+
+<link rel="icon" type="image/ico" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="http://localhost:1313/android-chrome-192x192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="http://localhost:1313/apple-touch-icon.png">
+
+<meta name="description" content="영속성 컨텍스트 기본 개념 (feat. 엔티티 매니저) - backend"/>
+
+
+<meta name="fediverse:creator" content="@username@instance.url">
+
+
+<title>
+    
+    영속성 컨텍스트 - 1 | Sehwan&#39;s Dev Retrospect
+    
+</title>
+
+<link rel="canonical" href="http://localhost:1313/posts/backend/%EC%98%81%EC%86%8D%EC%84%B1%EA%B3%84%EC%B8%B5/"/>
+
+<meta property="og:url" content="http://localhost:1313/posts/backend/%EC%98%81%EC%86%8D%EC%84%B1%EA%B3%84%EC%B8%B5/">
+  <meta property="og:site_name" content="Sehwan&#39;s Dev Retrospect">
+  <meta property="og:title" content="영속성 컨텍스트 - 1">
+  <meta property="og:description" content="영속성 컨텍스트 기본 개념 (feat. 엔티티 매니저) - backend">
+  <meta property="og:locale" content="ko_kr">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2025-11-06T00:00:00+00:00">
+    <meta property="article:modified_time" content="2025-11-06T00:00:00+00:00">
+    <meta property="article:tag" content="Backend">
+    <meta property="article:tag" content="Java">
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/assets/combined.min.fc5a44152c30c21bef13cba5205c8eddd1f54213723dfec49cb38631ef05a293.css" media="all">
+
+
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+</head>
+
+
+
+
+
+
+
+<body class="dark">
+
+  <div class="content">
+    <header>
+      
+
+<div class="header">
+
+    
+
+    <h1 class="header-title">
+        <a href="http://localhost:1313/">Sehwan&#39;s Dev Retrospect</a>
+    </h1>
+
+    <div class="header-menu">
+        
+
+        
+        
+
+        <p
+            class="small ">
+            <a href="/" >
+                /home
+            </a>
+        </p>
+        
+
+        <p
+            class="small ">
+            <a href="/posts" >
+                /posts
+            </a>
+        </p>
+        
+
+        <p
+            class="small ">
+            <a href="/tags/" >
+                /tags
+            </a>
+        </p>
+        
+
+        <p
+            class="small ">
+            <a href="/about" >
+                /about
+            </a>
+        </p>
+        
+        
+    </div>
+
+    
+
+</div>
+
+    </header>
+
+    <main class="main">
+      
+
+
+
+
+<div class="breadcrumbs"><a href="/">Home</a><span class="breadcrumbs-separator">/</span><a href="/posts/">Posts</a><span class="breadcrumbs-separator">/</span>
+        <a href="/posts/backend/%EC%98%81%EC%86%8D%EC%84%B1%EA%B3%84%EC%B8%B5/">영속성 컨텍스트 - 1</a></div>
+
+
+<div  class="autonumber" >
+  <article>
+    <header class="single-intro-container">
+        
+        <h1 class="single-title">영속성 컨텍스트 - 1</h1>
+        <p class="single-summary">영속성 컨텍스트 기본 개념 (feat. 엔티티 매니저)</p>
+        
+        <div class="single-subsummary">
+          
+          <div>
+            
+            <p class="author">Sin SeHwan </p>
+            
+            <p class="single-date">
+              <time datetime="2025-11-06T00:00:00&#43;00:00">November 6, 2025</time>
+              &nbsp; · &nbsp;4 min read
+            </p>
+          </div>
+        </div>
+        
+    </header>    
+        <div class="single-tags"><span>
+                  <a href="http://localhost:1313/tags/backend/">#Backend</a>
+                </span><span>
+                  <a href="http://localhost:1313/tags/java/">#Java</a>
+                </span>
+        </div>
+      <aside class="toc">
+        <p><strong>Table of contents</strong></p>
+        <nav id="TableOfContents">
+  <ul>
+    <li><a href="#spring-data-jpa">Spring Data JPA</a></li>
+    <li><a href="#엔티티-매니저-팩토리와-엔티티-매니저">엔티티 매니저 팩토리와 엔티티 매니저</a>
+      <ul>
+        <li><a href="#일반적인-웹-애플리케이션">일반적인 웹 애플리케이션</a></li>
+        <li><a href="#entitymanagerfactory">EntityManagerFactory</a></li>
+        <li><a href="#entitymanager">EntityManager</a></li>
+      </ul>
+    </li>
+    <li><a href="#영속성-컨텍스트란">영속성 컨텍스트란?</a></li>
+    <li><a href="#엔티티의-생명주기">엔티티의 생명주기</a></li>
+    <li><a href="#영속성-컨텍스트의-특징">영속성 컨텍스트의 특징</a>
+      <ul>
+        <li><a href="#엔티티-조회---1차-캐시">엔티티 조회 - 1차 캐시</a></li>
+        <li><a href="#엔티티-등록저장">엔티티 등록(저장)</a></li>
+        <li><a href="#플러시">플러시</a></li>
+      </ul>
+    </li>
+    <li><a href="#요약">요약</a></li>
+  </ul>
+</nav>
+      </aside>
+    
+    <div class="single-content">
+      <h1 class="heading" id="영속성-관리-persistence-layer">
+  영속성 관리 (Persistence Layer)
+  <a class="anchor" href="#%ec%98%81%ec%86%8d%ec%84%b1-%ea%b4%80%eb%a6%ac-persistence-layer">#</a>
+</h1>
+<blockquote>
+<p>JPA가 제공하는 기능은 크게 두 가지로 나눌 수 있습니다.</p></blockquote>
+<ul>
+<li>설계 부분
+<ul>
+<li>엔티티와 실제 DB 테이블 매핑</li>
+</ul>
+</li>
+<li>사용 부분
+<ul>
+<li>DB 테이블과 매핑된 엔티티 사용
+엔티티를 저장, 수정, 삭제, 조회</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>해당 과정은 엔티티 매니저가 처리해줍니다.</p></blockquote>
+<ul>
+<li>엔티티 매니저는 엔티티 CRUD를 담당하는 한 단계 추상화된 가상의 데이터베이스로 생각할 수 있습니다.</li>
+</ul>
+<h2 class="heading" id="spring-data-jpa">
+  Spring Data JPA
+  <a class="anchor" href="#spring-data-jpa">#</a>
+</h2>
+<ul>
+<li>
+<p>Spring 에서 JPA를 더 쉽게 만들 수 있도록 도와주는 데이터 접근 계층 모듈</p>
+</li>
+<li>
+<p>Spring Data JPA의 JpaRepository에서 제공하는 메서드들은 내부적으로 엔티티 매니저를 이용해 JPA의 표준 API(persist, find, merge, remove 등)을 호출합니다.</p>
+</li>
+</ul>
+<blockquote>
+<p>즉, Spring Data JPA의 동작을 이해하기 위해서는 JPA의 기본 함수를 먼저 살펴봐야 합니다.</p></blockquote>
+<h2 class="heading" id="엔티티-매니저-팩토리와-엔티티-매니저">
+  엔티티 매니저 팩토리와 엔티티 매니저
+  <a class="anchor" href="#%ec%97%94%ed%8b%b0%ed%8b%b0-%eb%a7%a4%eb%8b%88%ec%a0%80-%ed%8c%a9%ed%86%a0%eb%a6%ac%ec%99%80-%ec%97%94%ed%8b%b0%ed%8b%b0-%eb%a7%a4%eb%8b%88%ec%a0%80">#</a>
+</h2>
+<ul>
+<li>
+<p>엔티티 매니저 팩토리는 엔티티 매니저를 효율적으로 생성하는 공장입니다.</p>
+</li>
+<li>
+<p>엔티티 매니저 팩토리를 통해서 필요할 때마다 엔티티 매니저를 생성하는 구조입니다.</p>
+</li>
+</ul>
+<h3 class="heading" id="일반적인-웹-애플리케이션">
+  일반적인 웹 애플리케이션
+  <a class="anchor" href="#%ec%9d%bc%eb%b0%98%ec%a0%81%ec%9d%b8-%ec%9b%b9-%ec%95%a0%ed%94%8c%eb%a6%ac%ec%bc%80%ec%9d%b4%ec%85%98">#</a>
+</h3>
+<p>
+
+
+
+
+
+
+
+
+
+
+
+<figure class="">
+
+    <div class="img-container" style="--w: 1833; --h: 802;">
+        <img loading="lazy" alt="alt text" src="/posts/backend/%EC%98%81%EC%86%8D%EC%84%B1%EA%B3%84%EC%B8%B5/images/%EC%97%94%ED%8B%B0%ED%8B%B0_%EB%A7%A4%EB%8B%88%EC%A0%80.png" width="1833" height="802">
+    </div>
+
+    
+</figure>
+</p>
+<ul>
+<li>
+<p>엔티티 매니저 팩토리 생성 비용이 상당히 크기 때문에, 한 개만 만들어서 애플리케이션 전체에서 공유해서 사용합니다.</p>
+</li>
+<li>
+<p>즉, 엔티티 매니저 팩토리는 여러 스레드가 동시에 접근해도 안전합니다.</p>
+</li>
+<li>
+<p>단, 엔티티 매니저는 요청을 처리하는 각각의 스레드 개수만큼 독립적으로 만들어서 사용해야 합니다.</p>
+</li>
+<li>
+<p>엔티티 매니저는 데이터베이스 연결이 꼭 필요한 시점에만 커넥션 풀에서 커넥션을 얻습니다. 일반적으로 트랜잭션이 시작하는 시점에 커넥션을 획득합니다.</p>
+</li>
+</ul>
+<h3 class="heading" id="entitymanagerfactory">
+  EntityManagerFactory
+  <a class="anchor" href="#entitymanagerfactory">#</a>
+</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>EntityManagerFactory factory <span style="color:#ff79c6">=</span> Persistence.<span style="color:#50fa7b">createEntityMangerFactory</span>(<span style="color:#f1fa8c">&#34;jpabook&#34;</span>);
+</span></span></code></pre></div><h3 class="heading" id="entitymanager">
+  EntityManager
+  <a class="anchor" href="#entitymanager">#</a>
+</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>EntityManager em <span style="color:#ff79c6">=</span> factory.<span style="color:#50fa7b">createEntityManager</span>();
+</span></span></code></pre></div><h4 class="heading" id="persistencexml-예시-참고">
+  persistence.xml 예시 (참고)
+  <a class="anchor" href="#persistencexml-%ec%98%88%ec%8b%9c-%ec%b0%b8%ea%b3%a0">#</a>
+</h4>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-xml" data-lang="xml"><span style="display:flex;"><span><span style="color:#ff79c6">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">&lt;persistence</span> <span style="color:#50fa7b">xmlns=</span><span style="color:#f1fa8c">&#34;https://jakarta.ee/xml/ns/persistence&#34;</span>
+</span></span><span style="display:flex;"><span>             <span style="color:#50fa7b">version=</span><span style="color:#f1fa8c">&#34;3.0&#34;</span><span style="color:#ff79c6">&gt;</span>
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>  <span style="color:#6272a4">&lt;!--jpabook--&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#ff79c6">&lt;persistence-unit</span> <span style="color:#50fa7b">name=</span><span style="color:#f1fa8c">&#34;jpabook&#34;</span><span style="color:#ff79c6">&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#ff79c6">&lt;provider&gt;</span>org.hibernate.jpa.HibernatePersistenceProvider<span style="color:#ff79c6">&lt;/provider&gt;</span>
+</span></span><span style="display:flex;"><span>      
+</span></span><span style="display:flex;"><span>      <span style="color:#ff79c6">&lt;class&gt;</span>com.example.jpabook.domain.Member<span style="color:#ff79c6">&lt;/class&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>      <span style="color:#ff79c6">&lt;properties&gt;</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#6272a4">&lt;!-- DB 연결 정보 --&gt;</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#ff79c6">&lt;property</span> <span style="color:#50fa7b">name=</span><span style="color:#f1fa8c">&#34;jakarta.persistence.jdbc.driver&#34;</span> <span style="color:#50fa7b">value=</span><span style="color:#f1fa8c">&#34;com.mysql.cj.jdbc.Driver&#34;</span><span style="color:#ff79c6">/&gt;</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#ff79c6">&lt;property</span> <span style="color:#50fa7b">name=</span><span style="color:#f1fa8c">&#34;jakarta.persistence.jdbc.url&#34;</span> <span style="color:#50fa7b">value=</span><span style="color:#f1fa8c">&#34;jdbc:mysql://localhost:3306/jpabook&#34;</span><span style="color:#ff79c6">/&gt;</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#ff79c6">&lt;property</span> <span style="color:#50fa7b">name=</span><span style="color:#f1fa8c">&#34;jakarta.persistence.jdbc.user&#34;</span> <span style="color:#50fa7b">value=</span><span style="color:#f1fa8c">&#34;root&#34;</span><span style="color:#ff79c6">/&gt;</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#ff79c6">&lt;property</span> <span style="color:#50fa7b">name=</span><span style="color:#f1fa8c">&#34;jakarta.persistence.jdbc.password&#34;</span> <span style="color:#50fa7b">value=</span><span style="color:#f1fa8c">&#34;1234&#34;</span><span style="color:#ff79c6">/&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>          <span style="color:#6272a4">&lt;!-- Hibernate 옵션 --&gt;</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#ff79c6">&lt;property</span> <span style="color:#50fa7b">name=</span><span style="color:#f1fa8c">&#34;hibernate.dialect&#34;</span> <span style="color:#50fa7b">value=</span><span style="color:#f1fa8c">&#34;org.hibernate.dialect.MySQLDialect&#34;</span><span style="color:#ff79c6">/&gt;</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#ff79c6">&lt;property</span> <span style="color:#50fa7b">name=</span><span style="color:#f1fa8c">&#34;hibernate.hbm2ddl.auto&#34;</span> <span style="color:#50fa7b">value=</span><span style="color:#f1fa8c">&#34;update&#34;</span><span style="color:#ff79c6">/&gt;</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#ff79c6">&lt;property</span> <span style="color:#50fa7b">name=</span><span style="color:#f1fa8c">&#34;hibernate.show_sql&#34;</span> <span style="color:#50fa7b">value=</span><span style="color:#f1fa8c">&#34;true&#34;</span><span style="color:#ff79c6">/&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#ff79c6">&lt;/properties&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#ff79c6">&lt;/persistence-unit&gt;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">&lt;/persistence&gt;</span>
+</span></span></code></pre></div><h2 class="heading" id="영속성-컨텍스트란">
+  영속성 컨텍스트란?
+  <a class="anchor" href="#%ec%98%81%ec%86%8d%ec%84%b1-%ec%bb%a8%ed%85%8d%ec%8a%a4%ed%8a%b8%eb%9e%80">#</a>
+</h2>
+<blockquote>
+<p>Persistence Context : 엔티티를 영구적으로 저장하는 환경</p></blockquote>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>em.<span style="color:#50fa7b">persist</span>(member);
+</span></span></code></pre></div><ul>
+<li>
+<p>JPA를 이해하기 위해서는 영속성 컨텍스트라는 용어를 이해해야 합니다.</p>
+</li>
+<li>
+<p>앞에서 엔티티 매니저가 persist함수를 호출하면 DB가 아닌 영속성 컨텍스트라는 곳에 저장하게 됩니다.</p>
+</li>
+</ul>
+<h2 class="heading" id="엔티티의-생명주기">
+  엔티티의 생명주기
+  <a class="anchor" href="#%ec%97%94%ed%8b%b0%ed%8b%b0%ec%9d%98-%ec%83%9d%eb%aa%85%ec%a3%bc%ea%b8%b0">#</a>
+</h2>
+<p>
+
+
+
+
+
+
+
+
+
+
+
+<figure class="">
+
+    <div class="img-container" style="--w: 2320; --h: 523;">
+        <img loading="lazy" alt="entity-lifecycle" src="/posts/backend/%EC%98%81%EC%86%8D%EC%84%B1%EA%B3%84%EC%B8%B5/images/%EC%97%94%ED%8B%B0%ED%8B%B0_%EC%83%9D%EB%AA%85%EC%A3%BC%EA%B8%B0.png" width="2320" height="523">
+    </div>
+
+    
+</figure>
+</p>
+<blockquote>
+<p>엔티티에는 4가지 상태가 존재합니다.</p></blockquote>
+<ul>
+<li>비영속
+<ul>
+<li>영속성 컨텍스트와 전혀 관계가 없는 상태</li>
+</ul>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>Member member <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> Member();
+</span></span><span style="display:flex;"><span>member.<span style="color:#50fa7b">setUsername</span>(<span style="color:#f1fa8c">&#34;테스트 이름&#34;</span>);
+</span></span></code></pre></div><ul>
+<li>영속
+<ul>
+<li>영속성 컨텍스트에 저장된 상태</li>
+</ul>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>em.<span style="color:#50fa7b">persist</span>(member);
+</span></span></code></pre></div><ul>
+<li>준영속
+<ul>
+<li>영속성 컨텍스트에 저장되었다가 분리된 상태</li>
+</ul>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#6272a4">// 엔티티를 영속성 컨텍스트로부터 분리</span>
+</span></span><span style="display:flex;"><span>em.<span style="color:#50fa7b">detach</span>(member);
+</span></span></code></pre></div><ul>
+<li>삭제
+<ul>
+<li>삭제된 상태</li>
+</ul>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#6272a4">// 엔티티를 영속성 컨텍스트 &amp; 데이터베이스에서 삭제하는 용도</span>
+</span></span><span style="display:flex;"><span>em.<span style="color:#50fa7b">remove</span>(member);
+</span></span></code></pre></div><h2 class="heading" id="영속성-컨텍스트의-특징">
+  영속성 컨텍스트의 특징
+  <a class="anchor" href="#%ec%98%81%ec%86%8d%ec%84%b1-%ec%bb%a8%ed%85%8d%ec%8a%a4%ed%8a%b8%ec%9d%98-%ed%8a%b9%ec%a7%95">#</a>
+</h2>
+<ul>
+<li>식별자 값(@Id) 필수
+<ul>
+<li>영속성 컨텍스트는 식별자 값을 key로 사용하는 Map으로 볼 수 있습니다. 그래서 영속 상태에서는 식별자 값이 반드시 존재해야 합니다.</li>
+</ul>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>Map.<span style="color:#50fa7b">entry</span><span style="color:#ff79c6">&lt;</span>(식별자), (엔티티)<span style="color:#ff79c6">&gt;</span>
+</span></span></code></pre></div><ul>
+<li>데이터베이스 저장
+<ul>
+<li>영속성 컨텍스트의 변경사항을 flush를 통해 데이터베이스에 반영할 수 있습니다.</li>
+</ul>
+</li>
+</ul>
+<h3 class="heading" id="엔티티-조회---1차-캐시">
+  엔티티 조회 - 1차 캐시
+  <a class="anchor" href="#%ec%97%94%ed%8b%b0%ed%8b%b0-%ec%a1%b0%ed%9a%8c---1%ec%b0%a8-%ec%ba%90%ec%8b%9c">#</a>
+</h3>
+<blockquote>
+<p>영속성 컨텍스트의 내부 캐시를 1차 캐시라고 합니다. 영속 상태의 엔티티가 저장되는 공간입니다.</p></blockquote>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>Member member <span style="color:#ff79c6">=</span> em.<span style="color:#50fa7b">find</span>(Member.<span style="color:#50fa7b">class</span>, <span style="color:#f1fa8c">&#34;member1&#34;</span>);
+</span></span></code></pre></div><ul>
+<li>영속성 컨텍스트에서 식별자를 통해 저장된 엔티티 인스턴스를 조회할 수 있습니다.</li>
+</ul>
+<h4 class="heading" id="찾는-엔티티가-메모리에-존재하는-1차-캐시에-존재하는-경우">
+  찾는 엔티티가 메모리에 존재하는 1차 캐시에 존재하는 경우
+  <a class="anchor" href="#%ec%b0%be%eb%8a%94-%ec%97%94%ed%8b%b0%ed%8b%b0%ea%b0%80-%eb%a9%94%eb%aa%a8%eb%a6%ac%ec%97%90-%ec%a1%b4%ec%9e%ac%ed%95%98%eb%8a%94-1%ec%b0%a8-%ec%ba%90%ec%8b%9c%ec%97%90-%ec%a1%b4%ec%9e%ac%ed%95%98%eb%8a%94-%ea%b2%bd%ec%9a%b0">#</a>
+</h4>
+<p>
+
+
+
+
+
+
+
+
+
+
+
+<figure class="">
+
+    <div class="img-container" style="--w: 1117; --h: 454;">
+        <img loading="lazy" alt="cache_read" src="/posts/backend/%EC%98%81%EC%86%8D%EC%84%B1%EA%B3%84%EC%B8%B5/images/1%EC%B0%A8_%EC%BA%90%EC%8B%9C_hit.png" width="1117" height="454">
+    </div>
+
+    
+</figure>
+</p>
+<h4 class="heading" id="찾는-엔티티가-1차-캐시에-없는-경우">
+  찾는 엔티티가 1차 캐시에 없는 경우
+  <a class="anchor" href="#%ec%b0%be%eb%8a%94-%ec%97%94%ed%8b%b0%ed%8b%b0%ea%b0%80-1%ec%b0%a8-%ec%ba%90%ec%8b%9c%ec%97%90-%ec%97%86%eb%8a%94-%ea%b2%bd%ec%9a%b0">#</a>
+</h4>
+<p>
+
+
+
+
+
+
+
+
+
+
+
+<figure class="">
+
+    <div class="img-container" style="--w: 1076; --h: 571;">
+        <img loading="lazy" alt="cache_read" src="/posts/backend/%EC%98%81%EC%86%8D%EC%84%B1%EA%B3%84%EC%B8%B5/images/1%EC%B0%A8_%EC%BA%90%EC%8B%9C_miss.png" width="1076" height="571">
+    </div>
+
+    
+</figure>
+</p>
+<ol>
+<li>데이터베이스 조회해서 엔티티 생성</li>
+<li>1차 캐시에 저장</li>
+<li>영속 상태의 엔티티 반환</li>
+</ol>
+<h4 class="heading" id="엔티티-조회-요약">
+  엔티티 조회 요약
+  <a class="anchor" href="#%ec%97%94%ed%8b%b0%ed%8b%b0-%ec%a1%b0%ed%9a%8c-%ec%9a%94%ec%95%bd">#</a>
+</h4>
+<p>
+
+
+
+
+
+
+
+
+
+
+
+<figure class="">
+
+    <div class="img-container" style="--w: 2078; --h: 1450;">
+        <img loading="lazy" alt="cache_read" src="/posts/backend/%EC%98%81%EC%86%8D%EC%84%B1%EA%B3%84%EC%B8%B5/images/1%EC%B0%A8_%EC%BA%90%EC%8B%9C_%EC%A1%B0%ED%9A%8C.png" width="2078" height="1450">
+    </div>
+
+    
+</figure>
+</p>
+<h3 class="heading" id="엔티티-등록저장">
+  엔티티 등록(저장)
+  <a class="anchor" href="#%ec%97%94%ed%8b%b0%ed%8b%b0-%eb%93%b1%eb%a1%9d%ec%a0%80%ec%9e%a5">#</a>
+</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#6272a4">// 엔티티 매니저는 데이터 변경 시 트랜잭션을 시작해야 합니다.</span>
+</span></span><span style="display:flex;"><span><span style="color:#6272a4">// 트랜잭션 시작</span>
+</span></span><span style="display:flex;"><span>transaction.<span style="color:#50fa7b">begin</span>();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>em.<span style="color:#50fa7b">persist</span>(memberA);
+</span></span><span style="display:flex;"><span>em.<span style="color:#50fa7b">persist</span>(memberB);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#6272a4">// 트랜잭션 커밋</span>
+</span></span><span style="display:flex;"><span>transaction.<span style="color:#50fa7b">commit</span>();
+</span></span></code></pre></div><h4 class="heading" id="트랜잭션을-지원하는-쓰기-지연-transactional-write-behind">
+  트랜잭션을 지원하는 쓰기 지연 (transactional write-behind)
+  <a class="anchor" href="#%ed%8a%b8%eb%9e%9c%ec%9e%ad%ec%85%98%ec%9d%84-%ec%a7%80%ec%9b%90%ed%95%98%eb%8a%94-%ec%93%b0%ea%b8%b0-%ec%a7%80%ec%97%b0-transactional-write-behind">#</a>
+</h4>
+<ul>
+<li>
+<p>엔티티 매니저는 트랜잭션 커밋 전까지 엔티티를 데이터베이스에 저장하지 않고 쓰기 지연 SQL 저장소에 INSERT SQL을 모아둡니다. 그리고 트랜잭션 커밋 시점에 모아둔 쿼리를 보내는 형식으로 동작합니다.</p>
+</li>
+<li>
+<p>삭제 연산도 쓰기 지연 SQL 저장소를 활용합니다.</p>
+</li>
+</ul>
+<p>
+
+
+
+
+
+
+
+
+
+
+
+<figure class="">
+
+    <div class="img-container" style="--w: 1160; --h: 680;">
+        <img loading="lazy" alt="lazy_write" src="/posts/backend/%EC%98%81%EC%86%8D%EC%84%B1%EA%B3%84%EC%B8%B5/images/%EC%93%B0%EA%B8%B0_%EC%A7%80%EC%97%B0_%EC%A0%80%EC%9E%A5%EC%86%8C_%EA%B7%B8%EB%A6%BC.png" width="1160" height="680">
+    </div>
+
+    
+</figure>
+</p>
+<p>
+
+
+
+
+
+
+
+
+
+
+
+<figure class="">
+
+    <div class="img-container" style="--w: 2356; --h: 1818;">
+        <img loading="lazy" alt="lazy_write" src="/posts/backend/%EC%98%81%EC%86%8D%EC%84%B1%EA%B3%84%EC%B8%B5/images/%EC%93%B0%EA%B8%B0_%EC%A7%80%EC%97%B0.png" width="2356" height="1818">
+    </div>
+
+    
+</figure>
+</p>
+<h4 class="heading" id="엔티티-수정">
+  엔티티 수정
+  <a class="anchor" href="#%ec%97%94%ed%8b%b0%ed%8b%b0-%ec%88%98%ec%a0%95">#</a>
+</h4>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>transaction.<span style="color:#50fa7b">begin</span>();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Member memberA <span style="color:#ff79c6">=</span> em.<span style="color:#50fa7b">find</span>(Member.<span style="color:#50fa7b">class</span>, <span style="color:#f1fa8c">&#34;memberA&#34;</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>memberA.<span style="color:#50fa7b">setUsername</span>(<span style="color:#f1fa8c">&#34;hihi&#34;</span>);
+</span></span><span style="display:flex;"><span>memberA.<span style="color:#50fa7b">setAge</span>(25);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#6272a4">// 별도의 update함수가 없습니다.</span>
+</span></span><span style="display:flex;"><span>transaction.<span style="color:#50fa7b">commit</span>();
+</span></span></code></pre></div><ul>
+<li>
+<p>엔티티 수정 시에는 단순히 엔티티를 조회해서 데이터를 변경하면 됩니다.</p>
+</li>
+<li>
+<p>엔티티의 변경사항을 데이터베이스에 자동으로 반영하는 기능을 변경 감지(dirty_check)라고 합니다.</p>
+</li>
+</ul>
+<p>
+
+
+
+
+
+
+
+
+
+
+
+<figure class="">
+
+    <div class="img-container" style="--w: 1357; --h: 1760;">
+        <img loading="lazy" alt="dirty_check" src="/posts/backend/%EC%98%81%EC%86%8D%EC%84%B1%EA%B3%84%EC%B8%B5/images/%EB%B3%80%EA%B2%BD%EA%B0%90%EC%A7%80_%EA%B7%B8%EB%A6%BC.png" width="1357" height="1760">
+    </div>
+
+    
+</figure>
+</p>
+<ul>
+<li>
+<p>JPA는 엔티티를 영속성 컨텍스트에 보관할 때 최초 상태를 복사해서 스냅샷을 만듭니다. 그리고 flush 시점에 스냅샷과 엔티티를 비교해서 변경된 엔티티를 찾습니다.</p>
+</li>
+<li>
+<p>변경된 엔티티가 있다면 수정 쿼리를 쓰기 지연 SQL 저장소에 추가합니다.</p>
+</li>
+<li>
+<p>수정 쿼리가 commit 시점에 자연스럽게 반영됩니다.</p>
+</li>
+</ul>
+<p>
+
+
+
+
+
+
+
+
+
+
+
+<figure class="">
+
+    <div class="img-container" style="--w: 3276; --h: 2310;">
+        <img loading="lazy" alt="dirty_check" src="/posts/backend/%EC%98%81%EC%86%8D%EC%84%B1%EA%B3%84%EC%B8%B5/images/%EB%B3%80%EA%B2%BD_%EA%B0%90%EC%A7%80.png" width="3276" height="2310">
+    </div>
+
+    
+</figure>
+</p>
+<h3 class="heading" id="플러시">
+  플러시
+  <a class="anchor" href="#%ed%94%8c%eb%9f%ac%ec%8b%9c">#</a>
+</h3>
+<blockquote>
+<p>플러시(flush)는 영속성 컨텍스트의 변경 내용을 데이터베이스에 반영하는 연산입니다.</p></blockquote>
+<h4 class="heading" id="flush가-발생하는-경우">
+  flush()가 발생하는 경우
+  <a class="anchor" href="#flush%ea%b0%80-%eb%b0%9c%ec%83%9d%ed%95%98%eb%8a%94-%ea%b2%bd%ec%9a%b0">#</a>
+</h4>
+<ol>
+<li>em.flush() 직접 호출</li>
+<li>트랜잭션 커밋 시</li>
+<li>JPQL 쿼리 실행 시
+<ul>
+<li>JPQL은 실제 DB를 조회하기 때문</li>
+</ul>
+</li>
+</ol>
+<h2 class="heading" id="요약">
+  요약
+  <a class="anchor" href="#%ec%9a%94%ec%95%bd">#</a>
+</h2>
+<ul>
+<li>
+<p>엔티티 매니저 팩토리를 통해 엔티티 매니저를 생성할 수 있다.</p>
+</li>
+<li>
+<p>엔티티 매니저를 만들면 내부에 영속성 컨텍스트도 함께 만들어지는데, 이는 엔티티 매니저를 통해 접근할 수 있다.</p>
+</li>
+<li>
+<p>영속성 컨텍스트가 애플리케이션과 데이터베이스 사이를 한 단계 추상화한다.</p>
+<ul>
+<li>영속성 컨텍스트가 제공하는 기능
+<ul>
+<li>1차 캐시</li>
+<li>동일성 보장</li>
+<li>트랜잭션을 지원하는 쓰기 지연</li>
+<li>변경 감지</li>
+<li>지연 로딩</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>영속성 컨텍스트에 저장된 엔티티는 플러시 시점에 데이터베이스에 반영된다.</p>
+</li>
+</ul>
+
+    </div>
+  </article>
+
+  
+
+  
+
+  
+  
+
+<div class="single-pagination">
+    <hr />
+
+    <div class="flexnowrap">
+
+        <div class="single-pagination-prev">
+            
+            <div class="single-pagination-container-prev">
+                <div class="single-pagination-text">←</div>
+                <div class="single-pagination-text">
+                    <a href="/posts/backend/jpa_orm_%ED%95%84%EC%9A%94%EC%84%B11/">
+                        ORM(JPA)의 필요성 - 1
+                    </a>
+                </div>
+            </div>
+            
+        </div>
+
+        <div class="single-pagination-next">
+            
+            <div class="single-pagination-container-next">
+                <div class="single-pagination-text">
+                    <a href="/posts/backend/db_index/">
+                        DB Index 장단점
+                    </a>
+                </div>
+                <div class="single-pagination-text">→</div>
+            </div>
+            
+        </div>
+
+    </div>
+
+    <hr />
+</div>
+
+
+
+  
+
+  
+
+  
+  <div class="back-to-top">
+    <a href="#top">
+      back to top
+    </a>
+  </div>
+  
+
+</div>
+
+
+    </main>
+  </div>
+
+  
+  
+
+
+
+
+
+    
+
+
+
+
+  <footer>
+    
+
+    
+    
+
+
+
+
+
+    
+
+
+
+
+    
+    <p>Powered by
+        <a href="https://gohugo.io/">Hugo</a>
+        and
+        <a href="https://github.com/tomfran/typo">tomfran/typo</a>
+    </p>
+    
+    
+    
+
+
+  </footer>
+
+  
+  <link rel="stylesheet" 
+  href="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.css">
+  
+<script defer 
+  src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.js"></script>
+
+<script defer
+  src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/contrib/auto-render.min.js"
+  onload="renderMathInElement(document.body);"></script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    renderMathInElement(document.body, {
+      delimiters: [
+        { left: "$$", right: "$$", display: true },
+        { left: "$", right: "$", display: false }
+      ]
+    });
+  });
+</script>
+  
+</body>
+
+<script src="/js/theme-switch.js"></script>
+<script defer src="/js/copy-code.js"></script>
+</html>
