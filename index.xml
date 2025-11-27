@@ -2,87 +2,87 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Home on Sehwan&#39;s Dev Retrospect</title>
-    <link>http://localhost:1313/</link>
+    <link>https://sinsehwan.github.io/</link>
     <description>Recent content in Home on Sehwan&#39;s Dev Retrospect</description>
     <generator>Hugo</generator>
     <language>ko-kr</language>
     <lastBuildDate>Thu, 20 Nov 2025 00:00:00 +0000</lastBuildDate>
-    <atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://sinsehwan.github.io/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>CORS, CSRF, XSS</title>
-      <link>http://localhost:1313/posts/backend/cors_csrf_xss/</link>
+      <link>https://sinsehwan.github.io/posts/backend/cors_csrf_xss/</link>
       <pubDate>Thu, 20 Nov 2025 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/posts/backend/cors_csrf_xss/</guid>
+      <guid>https://sinsehwan.github.io/posts/backend/cors_csrf_xss/</guid>
       <description>배포 시 고려해야 하는 문제 알아보기(CORS, CSRF, XSS)</description>
     </item>
     <item>
       <title>DB Index 장단점</title>
-      <link>http://localhost:1313/posts/backend/db_index/</link>
+      <link>https://sinsehwan.github.io/posts/backend/db_index/</link>
       <pubDate>Thu, 20 Nov 2025 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/posts/backend/db_index/</guid>
+      <guid>https://sinsehwan.github.io/posts/backend/db_index/</guid>
       <description>B+Tree로 알아보는 DB Index의 특징</description>
     </item>
     <item>
       <title>영속성 컨텍스트 - 1</title>
-      <link>http://localhost:1313/posts/backend/%EC%98%81%EC%86%8D%EC%84%B1%EA%B3%84%EC%B8%B5/</link>
+      <link>https://sinsehwan.github.io/posts/backend/%EC%98%81%EC%86%8D%EC%84%B1%EA%B3%84%EC%B8%B5/</link>
       <pubDate>Thu, 06 Nov 2025 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/posts/backend/%EC%98%81%EC%86%8D%EC%84%B1%EA%B3%84%EC%B8%B5/</guid>
+      <guid>https://sinsehwan.github.io/posts/backend/%EC%98%81%EC%86%8D%EC%84%B1%EA%B3%84%EC%B8%B5/</guid>
       <description>영속성 컨텍스트 기본 개념 (feat. 엔티티 매니저)</description>
     </item>
     <item>
       <title>ORM(JPA)의 필요성 - 1</title>
-      <link>http://localhost:1313/posts/backend/jpa_orm_%ED%95%84%EC%9A%94%EC%84%B11/</link>
+      <link>https://sinsehwan.github.io/posts/backend/jpa_orm_%ED%95%84%EC%9A%94%EC%84%B11/</link>
       <pubDate>Fri, 10 Oct 2025 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/posts/backend/jpa_orm_%ED%95%84%EC%9A%94%EC%84%B11/</guid>
+      <guid>https://sinsehwan.github.io/posts/backend/jpa_orm_%ED%95%84%EC%9A%94%EC%84%B11/</guid>
       <description>SQL을 직접 다룰 때 발생하는 문제점</description>
     </item>
     <item>
       <title>ORM(JPA)의 필요성 - 2</title>
-      <link>http://localhost:1313/posts/backend/jpa_orm_%ED%95%84%EC%9A%94%EC%84%B12/</link>
+      <link>https://sinsehwan.github.io/posts/backend/jpa_orm_%ED%95%84%EC%9A%94%EC%84%B12/</link>
       <pubDate>Fri, 10 Oct 2025 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/posts/backend/jpa_orm_%ED%95%84%EC%9A%94%EC%84%B12/</guid>
+      <guid>https://sinsehwan.github.io/posts/backend/jpa_orm_%ED%95%84%EC%9A%94%EC%84%B12/</guid>
       <description>객체 중심 모델과 데이터 중심 모델의 패러다임 차이</description>
     </item>
     <item>
       <title>MSA 애플리케이션을 쿠버네티스로 배포하기 - k8s</title>
-      <link>http://localhost:1313/posts/cloud/msa2k8s/</link>
+      <link>https://sinsehwan.github.io/posts/cloud/msa2k8s/</link>
       <pubDate>Fri, 29 Aug 2025 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/posts/cloud/msa2k8s/</guid>
+      <guid>https://sinsehwan.github.io/posts/cloud/msa2k8s/</guid>
       <description>MSA 애플리케이션을 쿠버네티스로 배포하기 - k8s</description>
     </item>
     <item>
       <title>Algorithm - Binary Search - 2편</title>
-      <link>http://localhost:1313/posts/algorithm/binary_search_2/</link>
+      <link>https://sinsehwan.github.io/posts/algorithm/binary_search_2/</link>
       <pubDate>Sun, 03 Aug 2025 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/posts/algorithm/binary_search_2/</guid>
+      <guid>https://sinsehwan.github.io/posts/algorithm/binary_search_2/</guid>
       <description>Binary Search (이진 탐색)[2] - Java</description>
     </item>
     <item>
       <title>About Me</title>
-      <link>http://localhost:1313/about/about/</link>
+      <link>https://sinsehwan.github.io/about/about/</link>
       <pubDate>Wed, 30 Jul 2025 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/about/about/</guid>
+      <guid>https://sinsehwan.github.io/about/about/</guid>
       <description>About Me</description>
     </item>
     <item>
       <title>Algorithm - Binary Search - 1편</title>
-      <link>http://localhost:1313/posts/algorithm/binary_search/</link>
+      <link>https://sinsehwan.github.io/posts/algorithm/binary_search/</link>
       <pubDate>Sun, 27 Jul 2025 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/posts/algorithm/binary_search/</guid>
+      <guid>https://sinsehwan.github.io/posts/algorithm/binary_search/</guid>
       <description>Binary Search (이진 탐색)[1] - Java</description>
     </item>
     <item>
       <title>회고 - 1편</title>
-      <link>http://localhost:1313/posts/%ED%9A%8C%EA%B3%A0/test/</link>
+      <link>https://sinsehwan.github.io/posts/%ED%9A%8C%EA%B3%A0/test/</link>
       <pubDate>Sun, 27 Jul 2025 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/posts/%ED%9A%8C%EA%B3%A0/test/</guid>
+      <guid>https://sinsehwan.github.io/posts/%ED%9A%8C%EA%B3%A0/test/</guid>
       <description>Binary Search (이진 탐색)[1] - Java</description>
     </item>
     <item>
       <title>Algorithm - Union-Find</title>
-      <link>http://localhost:1313/posts/algorithm/union_find/</link>
+      <link>https://sinsehwan.github.io/posts/algorithm/union_find/</link>
       <pubDate>Fri, 25 Jul 2025 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/posts/algorithm/union_find/</guid>
+      <guid>https://sinsehwan.github.io/posts/algorithm/union_find/</guid>
       <description>Union-Find (분리집합) - Java</description>
     </item>
   </channel>
